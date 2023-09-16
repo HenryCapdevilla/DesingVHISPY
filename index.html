@@ -170,6 +170,23 @@
         }
     }
 
+    // Función para manejar eventos SSE
+    function handleSSE(event) {
+        var eventData = JSON.parse(event.data);
+        updateMap([eventData]); // Actualiza el mapa con la nueva ubicación
+        updateInfoTab(eventData); // Actualiza la información en la página
+    }
+
+    // Inicia la conexión SSE
+    var sse = new EventSource('tu_script.php'); // Reemplaza 'tu_script.php' con la URL de tu script PHP SSE
+
+    // Escucha eventos SSE
+    sse.addEventListener('message', handleSSE);
+
+    // Función para actualizar la información en la página
+    function updateInfoTab(data) {
+        document.getElementById("sse-timestamp").textContent = data.fecha + " " + data.hora;
+    }
     </script>
 </body>
 </html>
