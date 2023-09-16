@@ -18,7 +18,7 @@ def udp_server(port):
                 password="buabs123",
                 database="BuabsBD"
             )
-            
+
             cursor = connection.cursor()
 
             data_to_insert = data.decode("utf-8")

@@ -4,6 +4,7 @@ $username = "Buabs";
 $password = "buabs123";
 $dbname = "BuabsBD";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 header("Content-Type: text/event-stream");
 header("Cache-Control: no-cache");
@@ -16,6 +17,8 @@ function sendSSE($data) {
 }
 =======
 >>>>>>> parent of f236c2c (Actualización de credenciales)
+=======
+>>>>>>> parent of da0cf9c (Ok)
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -25,12 +28,15 @@ if ($conn->connect_error) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 while (true) {
     $sql = "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas ORDER BY FECHA DESC, HORA DESC LIMIT 1";
     $result = $conn->query($sql);
 =======
 =======
 >>>>>>> parent of f236c2c (Actualización de credenciales)
+=======
+>>>>>>> parent of da0cf9c (Ok)
 $sql = "SELECT LONGITUD, LATITUD, FECHA, HORA FROM tabla ORDER BY FECHA DESC, HORA DESC";
 $result = $conn->query($sql);
 >>>>>>> parent of f236c2c (Actualización de credenciales)
