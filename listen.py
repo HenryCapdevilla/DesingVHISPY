@@ -13,10 +13,10 @@ def udp_server(port):
 
         try:
             connection = mysql.connector.connect(
-                host="henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com",
-                user="hdcm",
-                password="hdcm02ds",
-                database="dbHenry"
+                host="database-1.cvdwcehcq5em.us-east-2.rds.amazonaws.com",
+                user="Buabs",
+                password="buabs123",
+                database="BuabsBD"
             )
             
             cursor = connection.cursor()
@@ -24,7 +24,7 @@ def udp_server(port):
             data_to_insert = data.decode("utf-8")
             latitud, longitud, fecha, hora = data_to_insert.split(',') # Asumiendo que los valores están separados por comas
 
-            insert_query = "INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
+            insert_query = "INSERT INTO tabla (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
             cursor.execute(insert_query, (latitud, longitud, fecha, hora))
 
             connection.commit()
