@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style_History.css">
+    <title>Selección de Fechas</title>
+</head>
+<body>
+    <div class="Menu">
+        <a href="index.html">
+            <img id="menu_bar" src="Icons/lista.png" alt="Menú">
+        </a>
+    </div>
+    <div class="title">
+        <h1>Selecciona un rango de fechas</h1>
+    </div>
+    <div class="container">
+        <div class="fecha-bloque">
+            <label for="fecha-inicial">Fecha Inicial:</label>
+            <input type="date" id="fecha-inicial">
+        </div>
+        <div class="fecha-bloque">
+            <label for="fecha-final">Fecha Final:</label>
+            <input type="date" id="fecha-final">
+        </div>
+    </div>
+    <div class="Result">
+        <button onclick="mostrarFechas()">Mostrar Fechas</button>
+        <div id="resultado"></div>
+    </div>
+    <script>
+        var fechaInicial = document.getElementById("fecha-inicial");
+        var fechaFinal = document.getElementById("fecha-final");
+        var fechaMinFinal = ""; // Variable para almacenar la fecha mínima permitida en fecha final
+
+        fechaInicial.addEventListener('change', function() {
+            // Obtener la fecha seleccionada en el bloque de fecha inicial
+            var fechaSeleccionada = new Date(fechaInicial.value);
+            
+            // Calcular la fecha mínima permitida para la fecha final (al día siguiente de la seleccionada)
+            fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1);
+            fechaMinFinal = fechaSeleccionada.toISOString().split('T')[0];
+            
+            // Actualizar la propiedad min del bloque de fecha final
+            fechaFinal.min = fechaMinFinal;
+            
+            // Resetear el valor de la fecha final si es anterior a la fecha mínima permitida
+            if (fechaFinal.value < fechaMinFinal) {
+                fechaFinal.value = fechaMinFinal;
+            }
+        });
+
+        function mostrarFechas() {
+            var fechaInicialValor = fechaInicial.value;
+            var fechaFinalValor = fechaFinal.value;
+
+            // Puedes hacer algo con las fechas, como mostrarlas en la página
+            var resultado = "Fecha Inicial: " + fechaInicialValor + "<br>Fecha Final: " + fechaFinalValor;
+            document.getElementById("resultado").innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>

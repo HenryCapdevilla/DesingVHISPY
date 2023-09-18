@@ -56,8 +56,6 @@ th {
 }
 
 #menu_bar{
-    /*! font-size: 45px; */ /* Cambiar el tamaño del icono */
-    color: red; /* Cambiar el color del icono (opcional) */
     width:40px;
     height: 40px;
     z-index: 501;
