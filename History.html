@@ -59,7 +59,7 @@
             // Llamar a la función mostrarFechas si ambas fechas están seleccionadas
             if (fechaInicial.value && fechaFinal.value) {
                 mostrarFechas();
-                print("Se han seleccionado ambas fechas")
+                console.log("Se han seleccionado ambas fechas");
             }
         });
 
@@ -79,7 +79,7 @@
             if (fechaInicialValor && fechaFinalValor) {
                 // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
                 // Realizar una solicitud AJAX para obtener datos del historial
-                print("Haciendo la solicitud AJAX")
+                console.log("Haciendo la solicitud AJAX")
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -94,7 +94,7 @@
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
                 xhr.send(formData);
-                print("Info recibida")
+                console.log("Info recibida")
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
             }
