@@ -91,3 +91,11 @@ label {
     width: 200px;
     text-align: left;
 }
+
+/* Style for the clear button */
+.leaflet-control-button {
+    background-image: url('broom.jpg');
+    background-size: cover;
+    width: 32px; /* Set the width and height to match your image size */
+    height: 32px;
+}
