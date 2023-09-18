@@ -56,31 +56,41 @@
             if (fechaFinal.value < fechaMinFinal) {
                 fechaFinal.value = fechaMinFinal;
             }
+            // Llamar a la función mostrarFechas si ambas fechas están seleccionadas
+            if (fechaInicial.value && fechaFinal.value) {
+                mostrarFechas();
+                print("Se han seleccionado ambas fechas")
+            }
         });
 
         function mostrarFechas() {
             var fechaInicialValor = fechaInicial.value;
             var fechaFinalValor = fechaFinal.value;
-
-            // Puedes hacer algo con las fechas, como mostrarlas en la página
-            var resultado = "Fecha Inicial: " + fechaInicialValor + "<br>Fecha Final: " + fechaFinalValor;
-            document.getElementById("resultado").innerHTML = resultado;
-
-            // Realizar una solicitud AJAX para obtener datos del historial
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    // Utiliza los datos obtenidos para mostrarlos en el mapa
-                    // Por ejemplo, puedes crear marcadores o polilíneas con estos datos.
-                }
-            };
-            // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
-            xhr.open("POST", "obtener_datos_history.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
-            xhr.send(formData);
-        }
+        
+            // Verificar si ambas fechas han sido ingresadas
+            if (fechaInicialValor && fechaFinalValor) {
+                // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
+                // Realizar una solicitud AJAX para obtener datos del historial
+                print("Haciendo la solicitud AJAX")
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        // Utiliza los datos obtenidos para mostrarlos en el mapa
+                        // Por ejemplo, puedes crear marcadores o polilíneas con estos datos.
+                        mostrarMarcadoresEnMapa(data);
+                    }
+                };
+                // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
+                xhr.open("POST", "obtener_datos_history.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
+                xhr.send(formData);
+                print("Info recibida")
+            } else {
+                // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
+            }
+        }        
 
         // Función para mostrar marcadores en el mapa
         function mostrarMarcadoresEnMapa(data) {
