@@ -101,7 +101,7 @@
         }        
         // Función para mostrar marcadores en el mapa
         function mostrarMarcadoresEnMapa(data) {
-            // Borra los marcadores existentes en el mapa y las polilíneas
+            // Borra los marcadores existentes en el mapa
             for (var i = 0; i < markers.length; i++) {
                 map.removeLayer(markers[i]);
             }
@@ -131,25 +131,34 @@
                 markers.push(marker);
 
                 if (i === 0) {
-                firstMarker = marker;
+                    firstMarker = marker;
                 }
 
                 if (i === data.length - 1) {
                     lastMarker = marker;
                 }
-            }
 
-            // Crea una polilínea que conecta el primer y último marcador
-            if (firstMarker && lastMarker) {
-                var polyline = L.polyline([firstMarker.getLatLng(), lastMarker.getLatLng()], { color: 'blue' });
-                polylines.push(polyline);
-                map.addLayer(polyline);
+                // Crea una polilínea que conecta este marcador con el siguiente (excepto el último)
+                if (i < data.length - 1) {
+                    var nextLatitud = data[i + 1].latitud;
+                    var nextLongitud = data[i + 1].longitud;
+
+                    var polyline = L.polyline([[latitud, longitud], [nextLatitud, nextLongitud]], { color: 'blue' });
+                    polylines.push(polyline);
+                    map.addLayer(polyline);
+                }
             }
 
             // Agrega los marcadores al mapa
             map.addLayer(L.layerGroup(markers));
-        }
 
+            // Crea una polilínea que conecta el primer y último marcador
+            if (firstMarker && lastMarker) {
+                var polyline = L.polyline([firstMarker.getLatLng(), lastMarker.getLatLng()], { color: 'red' });
+                polylines.push(polyline);
+                map.addLayer(polyline);
+            }
+        }
 
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
