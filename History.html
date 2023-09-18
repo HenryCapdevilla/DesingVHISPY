@@ -80,23 +80,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        try {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-        
-                    // Centra el mapa en la ubicación actual del usuario
-                    map.setView([lat, lon], 14); // Puedes ajustar el nivel de zoom (14 en este ejemplo) según tus necesidades
-                });
-            } else {
-                throw new Error("La geolocalización no está disponible en este navegador.");
-            }
-        } catch (error) {
-            // Manejo de la excepción y mensaje de error al usuario
-            alert("No se pudo acceder a su geoposición. " + error.message);
-        }
-            // Custom Leaflet control to clear the map
+        // Custom Leaflet control to clear the map
         var clearButtonControl = L.Control.extend({
             options: {
                 position: 'topright'
