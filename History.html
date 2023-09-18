@@ -65,6 +65,46 @@
             // Puedes hacer algo con las fechas, como mostrarlas en la página
             var resultado = "Fecha Inicial: " + fechaInicialValor + "<br>Fecha Final: " + fechaFinalValor;
             document.getElementById("resultado").innerHTML = resultado;
+
+            // Realizar una solicitud AJAX para obtener datos del historial
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    // Utiliza los datos obtenidos para mostrarlos en el mapa
+                    // Por ejemplo, puedes crear marcadores o polilíneas con estos datos.
+                }
+            };
+            // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
+            xhr.open("POST", "obtener_datos_history.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
+            xhr.send(formData);
+        }
+
+        // Función para mostrar marcadores en el mapa
+        function mostrarMarcadoresEnMapa(data) {
+            // Borra los marcadores existentes en el mapa
+            for (var i = 0; i < markers.length; i++) {
+                map.removeLayer(markers[i]);
+            }
+            markers = [];
+
+            // Itera sobre los datos y crea marcadores para cada punto de coordenada
+            for (var i = 0; i < data.length; i++) {
+                var latitud = data[i].latitud;
+                var longitud = data[i].longitud;
+                var fecha = data[i].fecha;
+                var hora = data[i].hora;
+
+                var marker = L.marker([latitud, longitud]).addTo(map);
+
+                // Agrega información adicional al marcador (puedes personalizar esto según tus necesidades)
+                marker.bindPopup("Fecha: " + fecha + "<br>Hora: " + hora);
+        
+                // Agrega el marcador al array de marcadores
+                markers.push(marker);
+            }
         }
 
         // Initialize the Leaflet map
