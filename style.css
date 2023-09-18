@@ -45,7 +45,7 @@ th {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
-    width: 6%;
+    width: 75px;
     height: 100%;
     position: absolute;
     top: 0px; /* Ajusta la posición vertical según tus necesidades */
@@ -58,7 +58,15 @@ th {
 #menu_bar{
     width:40px;
     height: 40px;
-    z-index: 501;
+}
+
+#logo{
+    position: absolute;
+    bottom:5%; /* Ajusta la distancia desde la parte superior en porcentaje de la altura de la ventana */
+    left: 25%; /* Ajusta la distancia desde la derecha en porcentaje del ancho de la ventana */
+    width:45px;
+    height: 55px;
+    padding-bottom: 0.5em;
 }
 
 .map{

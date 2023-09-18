@@ -4,30 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style_History.css">
-    <title>Selección de Fechas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <title>Historial</title>
 </head>
 <body>
     <div class="Menu">
         <a href="index.html">
             <img id="menu_bar" src="Icons/lista.png" alt="Menú">
         </a>
-    </div>
-    <div class="title">
-        <h1>Selecciona un rango de fechas</h1>
+        <img id="logo" src="Icons/Logo.png" alt="Menú">
     </div>
     <div class="container">
         <div class="fecha-bloque">
-            <label for="fecha-inicial">Fecha Inicial:</label>
+            <label for="fecha-inicial">
+                <h1>
+                    Fecha Inicial
+                </h1>
+            </label>
             <input type="date" id="fecha-inicial">
         </div>
         <div class="fecha-bloque">
-            <label for="fecha-final">Fecha Final:</label>
+            <label for="fecha-final">
+                <h1>
+                    Fecha Final
+                </h1>
+            </label>
             <input type="date" id="fecha-final">
         </div>
     </div>
-    <div class="Result">
-        <button onclick="mostrarFechas()">Mostrar Fechas</button>
-        <div id="resultado"></div>
+    <div class="container-map">
+        <div id="map" class="map" style="height: 100%;"></div>
     </div>
     <script>
         var fechaInicial = document.getElementById("fecha-inicial");
@@ -59,6 +66,65 @@
             var resultado = "Fecha Inicial: " + fechaInicialValor + "<br>Fecha Final: " + fechaFinalValor;
             document.getElementById("resultado").innerHTML = resultado;
         }
+        // Initialize the Leaflet map
+        var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
+        var maxMarkersToShow = 2; // Show only the first and last markers
+        var markers = []; // Array to store markers
+        var polylines = []; // Array to store polylines
+        var timer; // Timer to clear markers if no new data in 30 seconds
+        var centerSet = false; // Flag to check if the center has been set
+        
+        // Title
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        
+        // Comprueba si el navegador admite la geolocalización
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+            
+            // Centra el mapa en la ubicación actual del usuario
+            map.setView([lat, lon], 14); // Puedes ajustar el nivel de zoom (14 en este ejemplo) según tus necesidades
+            });
+        }
+
+        // Custom Leaflet control for info tab
+        var infoTabControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-control-info');
+                container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
+                return container;
+            }
+        });
+
+        var infoTab = new infoTabControl();
+        infoTab.addTo(map);
+
+        // Create additional Control placeholders
+        function addControlPlaceholders(map) {
+            var corners = map._controlCorners,
+                l = 'leaflet-',
+                container = map._controlContainer;
+    
+            function createCorner(vSide, hSide) {
+                var className = l + vSide + ' ' + l + hSide;
+    
+                corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+            }
+    
+            createCorner('verticalcenter', 'left');
+            createCorner('verticalcenter', 'right');
+        }
+        addControlPlaceholders(map);
+    
+        // Change the position of the Zoom Control to a newly created placeholder.
+        map.zoomControl.setPosition('bottomright');
     </script>
 </body>
 </html>
