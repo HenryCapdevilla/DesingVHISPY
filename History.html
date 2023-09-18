@@ -186,18 +186,26 @@
                 button.href = '#';
                 button.title = 'Limpiar Mapa';
                 button.innerHTML = ''; // No text inside the button, just the icon
-    
+
                 L.DomEvent.on(button, 'click', function () {
-                    for (var i = 0; i < polylines.length; i++) {
+                    // Remueve todos los marcadores
+                    for (var i = 0; i < markers.length; i++) {
+                        map.removeLayer(markers[i]);
+                    }
+                markers = [];
+
+                // Remueve todas las polilíneas
+                for (var i = 0; i < polylines.length; i++) {
                     map.removeLayer(polylines[i]);
                 }
                 polylines = [];
-            });
+                });
             return container;
             }
         });
 
         map.addControl(new clearButtonControl());
+
 
         // Custom Leaflet control for info tab
         var infoTabControl = L.Control.extend({
