@@ -67,16 +67,13 @@
             var fechaInicialValor = fechaInicial.value;
             var fechaFinalValor = fechaFinal.value;
 
-            // Comprueba si el navegador admite la geolocalización
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(function (position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
         
                 // Centra el mapa en la ubicación actual del usuario
                 map.setView([lat, lon], 14); // Puedes ajustar el nivel de zoom (14 en este ejemplo) según tus necesidades
-                });
-            }   
+            });   
         
             // Verificar si ambas fechas han sido ingresadas
             if (fechaInicialValor && fechaFinalValor) {
@@ -104,11 +101,19 @@
         }        
         // Función para mostrar marcadores en el mapa
         function mostrarMarcadoresEnMapa(data) {
-            // Borra los marcadores existentes en el mapa
+            // Borra los marcadores existentes en el mapa y las polilíneas
             for (var i = 0; i < markers.length; i++) {
                 map.removeLayer(markers[i]);
             }
             markers = [];
+    
+            for (var i = 0; i < polylines.length; i++) {
+                map.removeLayer(polylines[i]);
+            }
+            polylines = [];
+
+            var firstMarker = null;
+            var lastMarker = null;
 
             // Itera sobre los datos y crea marcadores para cada punto de coordenada
             for (var i = 0; i < data.length; i++) {
@@ -117,15 +122,34 @@
                 var fecha = data[i].fecha;
                 var hora = data[i].hora;
 
-                var marker = L.marker([latitud, longitud]).addTo(map);
+                var marker = L.marker([latitud, longitud]);
 
                 // Agrega información adicional al marcador (puedes personalizar esto según tus necesidades)
                 marker.bindPopup("Fecha: " + fecha + "<br>Hora: " + hora);
-        
+    
                 // Agrega el marcador al array de marcadores
                 markers.push(marker);
+
+                if (i === 0) {
+                firstMarker = marker;
+                }
+
+                if (i === data.length - 1) {
+                    lastMarker = marker;
+                }
             }
+
+            // Crea una polilínea que conecta el primer y último marcador
+            if (firstMarker && lastMarker) {
+                var polyline = L.polyline([firstMarker.getLatLng(), lastMarker.getLatLng()], { color: 'blue' });
+                polylines.push(polyline);
+                map.addLayer(polyline);
+            }
+
+            // Agrega los marcadores al mapa
+            map.addLayer(L.layerGroup(markers));
         }
+
 
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
