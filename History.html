@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="Obtener_mapa.js"></script>
+    <script src="Control_mapa.js"></script>
     <title>Historial</title>
 </head>
 <body onload="mostrarMarcadoresEnMapa(data)">
@@ -33,9 +34,18 @@
             </label>
             <input type="date" id="fecha-final">
         </div>
+        <button onclick="avanzarDato()" class="Button_Avanzar">
+            <h1>←</h1>
+        </button>
+        <!-- Agrega un botón para retroceder al dato anterior -->
+        <button onclick="retrocederDato()" class="Button_Retroceder">
+            <h1>→</h1>
+        </button>
     </div>
     <div class="container-map">
-        <div id="map" class="map" style="height: 100%;"></div>
+        <div id="map" class="map" style="height: 100%;">
+            <!-- Agrega un botón para avanzar al siguiente dato -->
+        </div>
     </div>
     <script>
         var fechaInicial = document.getElementById("fecha-inicial");
@@ -66,15 +76,7 @@
 
         function mostrarFechas() {
             var fechaInicialValor = fechaInicial.value;
-            var fechaFinalValor = fechaFinal.value;
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var lat = position.coords.latitude;
-                var lon = position.coords.longitude;
-        
-                // Centra el mapa en la ubicación actual del usuario
-                map.setView([lat, lon], 14); // Puedes ajustar el nivel de zoom (14 en este ejemplo) según tus necesidades
-            });   
+            var fechaFinalValor = fechaFinal.value;   
         
             // Verificar si ambas fechas han sido ingresadas
             if (fechaInicialValor && fechaFinalValor) {
@@ -100,9 +102,6 @@
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
             }
         }
-        
-        
-
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
         var maxMarkersToShow = 2; // Show only the first and last markers
@@ -114,18 +113,7 @@
         // Title
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Comprueba si el navegador admite la geolocalización
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-                
-            // Centra el mapa en la ubicación actual del usuario
-            map.setView([lat, lon], 14); // Puedes ajustar el nivel de zoom (14 en este ejemplo) según tus necesidades
-            });
-        }   
+        }).addTo(map); 
         
         // Custom Leaflet control to clear the map
         var clearButtonControl = L.Control.extend({
