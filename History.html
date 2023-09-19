@@ -6,9 +6,10 @@
     <link rel="stylesheet" href="style_History.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="Obtener_mapa.js"></script>
     <title>Historial</title>
 </head>
-<body>
+<body onload="mostrarMarcadoresEnMapa(data)">
     <div class="Menu">
         <a href="index.html">
             <img id="menu_bar" src="Icons/lista.png" alt="Menú">
@@ -98,59 +99,9 @@
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
             }
-        }        
-        // Función para mostrar únicamente dos marcadores en el mapa
-        function mostrarMarcadoresEnMapa(data) {
-            // Borra los marcadores existentes en el mapa y las polilíneas
-            for (var i = 0; i < markers.length; i++) {
-                map.removeLayer(markers[i]);
-            }
-            markers = [];
-    
-            for (var i = 0; i < polylines.length; i++) {
-                map.removeLayer(polylines[i]);
-            }
-            polylines = [];
-
-            var primeraCoordenada = null;
-            var ultimaCoordenada = null;
-
-            // Itera sobre los datos y encuentra la primera y última coordenada dentro del rango de fechas
-            for (var i = 0; i < data.length; i++) {
-                var latitud = data[i].latitud;
-                var longitud = data[i].longitud;
-                var fecha = data[i].fecha;
-
-                // Verifica si la fecha está dentro del rango seleccionado
-                if (fecha >= fechaInicial.value && fecha <= fechaFinal.value) {
-                    var redIcon = L.divIcon({ className: 'red-icon' });
-                    // Si es la primera coordenada dentro del rango, crea un marcador rojo
-                    if (!primeraCoordenada) {
-                        var marker = L.marker([latitud, longitud], { icon: redIcon });
-                        primeraCoordenada = marker;
-                    }
-                    // Actualiza la última coordenada dentro del rango a medida que avanza
-                    ultimaCoordenada = L.latLng(latitud, longitud);
-                }
-            }
-
-            // Crea una polilínea que conecta la primera y última coordenada dentro del rango
-            if (primeraCoordenada && ultimaCoordenada) {
-                var polyline = L.polyline([primeraCoordenada.getLatLng(), ultimaCoordenada], { color: 'blue' });
-                polylines.push(polyline);
-                map.addLayer(polyline);
-            }  
-
-            // Agrega los marcadores al mapa
-            if (primeraCoordenada) {
-                map.addLayer(primeraCoordenada);
-            }
-            if (ultimaCoordenada) {
-                var blueIcon = L.divIcon({ className: 'blue-icon' });
-                var ultimaCoordenadaMarker = L.marker(ultimaCoordenada, { icon: blueIcon });
-                map.addLayer(ultimaCoordenadaMarker);
-            }
         }
+        
+        
 
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
