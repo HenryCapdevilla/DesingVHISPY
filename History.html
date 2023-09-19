@@ -34,13 +34,6 @@
             </label>
             <input type="date" id="fecha-final">
         </div>
-        <button onclick="avanzarDato()" class="Button_Avanzar">
-            <h1>←</h1>
-        </button>
-        <!-- Agrega un botón para retroceder al dato anterior -->
-        <button onclick="retrocederDato()" class="Button_Retroceder">
-            <h1>→</h1>
-        </button>
     </div>
     <div class="container-map">
         <div id="map" class="map" style="height: 100%;">
@@ -150,6 +143,21 @@
 
         map.addControl(new clearButtonControl());
 
+        // Custom Leaflet control for advancing and reversing data
+        var dataControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-control-data');
+                    container.innerHTML = '<button onclick="avanzarDato()"><h1>←</h1></button><button onclick="retrocederDato()"><h1>→</h1></button>';
+                    return container;
+            }
+        });
+        
+        var dataControlButton = new dataControl();
+        dataControlButton.addTo(map);
+
 
         // Custom Leaflet control for info tab
         var infoTabControl = L.Control.extend({
@@ -185,6 +193,7 @@
     
         // Change the position of the Zoom Control to a newly created placeholder.
         map.zoomControl.setPosition('bottomright');
+
     </script>
 </body>
 </html>

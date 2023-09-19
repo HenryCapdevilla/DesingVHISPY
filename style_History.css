@@ -76,25 +76,15 @@ button{
     background-color: #a02ad2;
     border: 1px solid #ccc;
     border-radius: 1em;
+    width: 7vw;
+    height: 5vh;
 }
 
-.Button_Avanzar{
-    position: absolute;
-    bottom: 30%; /* Ajusta la distancia desde la parte superior en porcentaje de la altura de la ventana */
-    right: 15%; /* Ajusta la distancia desde la derecha en porcentaje del ancho de la ventana */
-    width: 5%;
-    height: 10%;
-    z-index: 600;
+.leaflet-control-data {
+    width: 15vw;
+    height: 5vh;
 }
 
-.Button_Retroceder{
-    position: absolute;
-    bottom: 30%; /* Ajusta la distancia desde la parte superior en porcentaje de la altura de la ventana */
-    right: 5%; /* Ajusta la distancia desde la derecha en porcentaje del ancho de la ventana */
-    width: 5%;
-    height: 10%;
-    z-index: 600;
-}
 /* Estilos para los bloques de fecha */
 .fecha-bloque {
     background-color: #a02ad2;
