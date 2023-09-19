@@ -69,6 +69,15 @@ th {
     padding-bottom: 0.5em;
 }
 
+#banner_bar{
+    position: absolute;
+    top:0%; /* Ajusta la distancia desde la parte superior en porcentaje de la altura de la ventana */
+    left: 40%; /* Ajusta la distancia desde la derecha en porcentaje del ancho de la ventana */
+    width:25vw;
+    height: 20vh;
+    z-index: 601;
+}
+
 .map{
     top: 0px; /* Ajusta la posición vertical según tus necesidades */
     left: 0px;
