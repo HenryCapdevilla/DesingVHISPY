@@ -90,6 +90,10 @@
                         // Utiliza los datos obtenidos para mostrarlos en el mapa
                         // Por ejemplo, puedes crear marcadores o polilíneas con estos datos.
                         mostrarMarcadoresEnMapa(data);
+                        // Asigna los datos a la variable global data
+                        window.data = data;
+                        // Llama a avanzarDato() una vez que los datos se hayan cargado
+                        avanzarDato();
                     }
                 };
                 // Envía una solicitud POST al archivo PHP que obtiene los datos del historial

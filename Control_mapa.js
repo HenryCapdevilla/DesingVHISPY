@@ -2,6 +2,9 @@
 var currentIndex = 0;
 var marker; // Variable para almacenar el marcador actual
 
+// Definir data como una variable global
+var data = []; // Aquí asigna tus datos JSON a esta variable
+
 // Función para mostrar el dato actual y el marcador en el mapa
 function mostrarDatoActual() {
     if (data.length > 0 && currentIndex >= 0 && currentIndex < data.length) {
