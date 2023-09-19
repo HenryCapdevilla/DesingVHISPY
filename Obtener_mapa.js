@@ -1,3 +1,6 @@
+// Variable global para realizar un seguimiento de si la consulta se ha realizado
+var consultaRealizada = false;
+
 // Función para mostrar una secuencia de marcadores y polilíneas en el mapa
 function mostrarMarcadoresEnMapa(data) {
     // Borra los marcadores existentes en el mapa y las polilíneas
@@ -54,4 +57,15 @@ function mostrarMarcadoresEnMapa(data) {
     // Agrega todas las polilíneas al mapa
     var polylinesLayer = L.layerGroup(polylines);
     map.addLayer(polylinesLayer);
+
+    // Ajusta el centro y el nivel de zoom del mapa solo si la consulta es la primera vez
+    if (!consultaRealizada && coordenadas.length > 0) {
+        var bounds = L.latLngBounds(coordenadas);
+        map.fitBounds(bounds);
+
+        // Realiza un zoom adicional para centrar el mapa en la ubicación de la consulta
+        map.setZoom(12); // Puedes ajustar el nivel de zoom según tus necesidades
+        
+        // Establece la bandera de consulta realizada en true
+    }
 }

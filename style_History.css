@@ -80,6 +80,16 @@ button{
     height: 5vh;
 }
 
+/* Estilo cuando el botón está enfocado (pulsado por teclado) */
+button:focus {
+    background-color: #2980b9;
+}
+
+/* Estilo cuando el botón está activo (pulsado por ratón) */
+button:active {
+    background-color: #2070a0;
+}
+
 .leaflet-control-data {
     width: 15vw;
     height: 5vh;

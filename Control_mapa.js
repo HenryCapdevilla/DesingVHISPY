@@ -47,3 +47,17 @@ function retrocederDato() {
 }
 // Llama a la función inicial para mostrar el primer dato
 mostrarDatoActual();
+
+// Event listener para avanzar al siguiente dato con la flecha derecha
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowRight') {
+        avanzarDato();
+    }
+});
+
+// Event listener para retroceder al dato anterior con la flecha izquierda
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft') {
+        retrocederDato();
+    }
+});
