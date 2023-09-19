@@ -46,12 +46,5 @@ function retrocederDato() {
     }
 }
 
-// Agregar botones para avanzar y retroceder en el control de información
-var infoControl = L.DomUtil.create('div', 'leaflet-control-info');
-infoControl.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span><br><br><button onclick="retrocederDato()">Retroceder</button> <button onclick="avanzarDato()">Avanzar</button>';
-
-// Agregar el control de información al mapa
-infoControl.addTo(map);
-
 // Llama a la función inicial para mostrar el primer dato
 mostrarDatoActual();
