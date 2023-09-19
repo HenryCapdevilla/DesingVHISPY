@@ -123,6 +123,7 @@
 
                 // Verifica si la fecha está dentro del rango seleccionado
                 if (fecha >= fechaInicial.value && fecha <= fechaFinal.value) {
+                    var redIcon = L.divIcon({ className: 'red-icon' });
                     // Si es la primera coordenada dentro del rango, crea un marcador rojo
                     if (!primeraCoordenada) {
                         var marker = L.marker([latitud, longitud], { icon: redIcon });
