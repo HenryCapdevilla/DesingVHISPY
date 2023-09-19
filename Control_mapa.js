@@ -45,6 +45,5 @@ function retrocederDato() {
         mostrarDatoActual();
     }
 }
-
 // Llama a la función inicial para mostrar el primer dato
 mostrarDatoActual();

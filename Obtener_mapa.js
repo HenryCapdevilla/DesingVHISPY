@@ -1,6 +1,3 @@
-// Variable global para realizar un seguimiento de si la consulta se ha realizado
-var consultaRealizada = false;
-
 // Función para mostrar una secuencia de marcadores y polilíneas en el mapa
 function mostrarMarcadoresEnMapa(data) {
     // Borra los marcadores existentes en el mapa y las polilíneas
@@ -15,7 +12,6 @@ function mostrarMarcadoresEnMapa(data) {
     polylines = [];
 
     var coordenadas = [];
-    var redIcon = L.divIcon({ className: 'red-icon' });
     var blueIcon = L.divIcon({ className: 'blue-icon' });
 
     // Filtra las coordenadas que están dentro del rango de fechas seleccionado
@@ -35,7 +31,7 @@ function mostrarMarcadoresEnMapa(data) {
         var fecha = coordenadasFiltradas[i].fecha;
         var hora = coordenadasFiltradas[i].hora;
         
-        var marker = L.marker([latitud, longitud], { icon: redIcon });
+        var marker = L.marker([latitud, longitud], { icon: blueIcon });
         marker.bindPopup("Fecha: " + fecha + "<br>Hora: " + hora);
         markers.push(marker);
 
@@ -58,15 +54,4 @@ function mostrarMarcadoresEnMapa(data) {
     // Agrega todas las polilíneas al mapa
     var polylinesLayer = L.layerGroup(polylines);
     map.addLayer(polylinesLayer);
-
-    // Ajusta el centro y el nivel de zoom del mapa solo si la consulta es la primera vez
-    if (!consultaRealizada && coordenadas.length > 0) {
-        var bounds = L.latLngBounds(coordenadas);
-        map.fitBounds(bounds);
-
-        // Realiza un zoom adicional para centrar el mapa en la ubicación de la consulta
-        map.setZoom(12); // Puedes ajustar el nivel de zoom según tus necesidades
-        
-        // Establece la bandera de consulta realizada en true
-    }
 }
