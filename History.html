@@ -149,9 +149,6 @@
                 }
             }
 
-            // Agrega los marcadores al mapa
-            map.addLayer(L.layerGroup(markers));
-
             // Crea una polilínea que conecta el primer y último marcador
             if (firstMarker && lastMarker) {
                 var polyline = L.polyline([firstMarker.getLatLng(), lastMarker.getLatLng()], { color: 'red' });
