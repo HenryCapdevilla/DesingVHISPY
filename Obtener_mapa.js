@@ -1,4 +1,6 @@
+// Variable global para realizar un seguimiento de si la consulta se ha realizado
 var consultaRealizada = false;
+
 // Función para mostrar una secuencia de marcadores y polilíneas en el mapa
 function mostrarMarcadoresEnMapa(data) {
     // Borra los marcadores existentes en el mapa y las polilíneas
@@ -66,6 +68,5 @@ function mostrarMarcadoresEnMapa(data) {
         map.setZoom(12); // Puedes ajustar el nivel de zoom según tus necesidades
         
         // Establece la bandera de consulta realizada en true
-        consultaRealizada = true;
     }
 }
