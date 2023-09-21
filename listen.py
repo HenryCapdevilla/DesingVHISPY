@@ -3,15 +3,6 @@ import threading
 import mysql.connector
 import json
 
-def load_config():
-    try:
-        with open('config.json', 'r') as config_file:
-            config = json.load(config_file)
-            return config
-    except FileNotFoundError:
-        print("El archivo de configuración 'config.json' no se encuentra.")
-        return None
-
 def udp_server(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(('0.0.0.0', port))
@@ -52,6 +43,9 @@ def udp_server(port):
                 connection.close()
 
 if __name__ == "__main__":
+    with open('config.json', 'r') as config_file:
+        config = json.load(config_file)
+    
     port = 25000
     udp_thread = threading.Thread(target=udp_server, args=(port,))
     udp_thread.start()
