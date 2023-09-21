@@ -2,24 +2,25 @@ import git
 import time
 
 repo_path = '/var/www/html'  # Ruta de tu repositorio local
+rama_remota = 'Henry'  # Nombre de la rama remota que deseas verificar
 
 while True:
     try:
         repo = git.Repo(repo_path)
         origin = repo.remotes.origin
 
-        # Obtiene el commit más reciente en la rama principal (main)
+        # Obtiene el commit más reciente en la rama remota
         origin.fetch()
-        head = repo.head.reference
-        latest_commit = origin.refs[f'{head}'].commit
+        rama_remota_ref = f'origin/{rama_remota}'
+        latest_commit = origin.refs[rama_remota_ref].commit
 
-        # Compara el commit actual con el commit más reciente
+        # Compara el commit actual con el commit más reciente en la rama remota
         if repo.head.commit != latest_commit:
-            print("Actualizando el repositorio...")
-            repo.remotes.origin.pull()
+            print(f"Actualizando el repositorio desde la rama '{rama_remota}'...")
+            repo.remotes.origin.pull(rama_remota_ref)
             print("Repositorio actualizado.")
         else:
-            print("No hay cambios en el repositorio.")
+            print("No hay cambios en la rama remota.")
 
     except Exception as e:
         print("Error:", str(e))
