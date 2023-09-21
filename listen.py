@@ -2,6 +2,7 @@ import socket
 import threading
 import mysql.connector
 
+
 def udp_server(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(('0.0.0.0', port))
@@ -13,16 +14,17 @@ def udp_server(port):
 
         try:
             connection = mysql.connector.connect(
-                host="henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com",
-                user="hdcm",
-                password="hdcm02ds",
-                database="dbHenry"
+                host="basededatos-xd.cccbupvd7g7d.us-east-2.rds.amazonaws.com",
+                user="robin",
+                password="Metallica9801.",
+                database="dbRobinson"
             )
-            
+
             cursor = connection.cursor()
 
             data_to_insert = data.decode("utf-8")
-            latitud, longitud, fecha, hora = data_to_insert.split(',') # Asumiendo que los valores están separados por comas
+            # Asumiendo que los valores están separados por comas
+            latitud, longitud, fecha, hora = data_to_insert.split(',')
 
             insert_query = "INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
             cursor.execute(insert_query, (latitud, longitud, fecha, hora))
@@ -40,6 +42,7 @@ def udp_server(port):
                 cursor.close()
             if 'connection' in locals() or 'connection' in globals():
                 connection.close()
+
 
 if __name__ == "__main__":
     port = 25000
