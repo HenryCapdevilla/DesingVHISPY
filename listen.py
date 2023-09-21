@@ -19,7 +19,6 @@ def udp_server(port):
                 password=config["database"]["password"],
                 database=config["database"]["name"]
             )
-            
             cursor = connection.cursor()
 
             data_to_insert = data.decode("utf-8")

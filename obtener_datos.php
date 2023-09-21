@@ -9,7 +9,6 @@ $database_user = $config['database']['user'];
 $database_password = $config['database']['password'];
 $database_name = $config['database']['name'];
 
-$sql = $config['sql'];
 $conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {

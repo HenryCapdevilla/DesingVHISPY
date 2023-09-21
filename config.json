@@ -8,5 +8,5 @@
     },
     "sql": "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas ORDER BY FECHA DESC, HORA DESC",
     "sql_query": "INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)",
-    "sql_h" : "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas  WHERE FECHA BETWEEN '$fechaInicial' AND '$fechaFinal' ORDER BY FECHA DESC, HORA DESC"
+    "sql_h" : "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas WHERE FECHA BETWEEN '$fechaInicial' AND '$fechaFinal' ORDER BY FECHA DESC, HORA DESC"
 }

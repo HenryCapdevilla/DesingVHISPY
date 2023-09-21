@@ -20,7 +20,7 @@ if ($conn->connect_error) {
 }
 
 // Construir la consulta SQL con las fechas de inicio y fin
-$sql = $config['sql_h'];
+$sql = str_replace('$fechaInicial', $fechaInicial, str_replace('$fechaFinal', $fechaFinal, $config['sql_h']));
 $result = $conn->query($sql);
 
 $data = array();
