@@ -1,7 +1,7 @@
 import git
 import time
 
-repo_path = 'C:/Users/Henry D/OneDrive/Escritorio/Diseno02/DSP2/DesingVHISPY'  # Ruta de tu repositorio local
+repo_path = '/var/www/html/.'  # Ruta de tu repositorio local
 
 repo = git.Repo(repo_path)
 
