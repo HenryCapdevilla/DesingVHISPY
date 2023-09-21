@@ -14,10 +14,10 @@ def udp_server(port):
 
         try:
             connection = mysql.connector.connect(
-                host="basededatos-xd.cccbupvd7g7d.us-east-2.rds.amazonaws.com",
-                user="robin",
-                password="Metallica9801.",
-                database="dbRobinson"
+                host="henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com",
+                user="hdcm",
+                password="hdcm02ds",
+                database="dbHenry"
             )
 
             cursor = connection.cursor()
