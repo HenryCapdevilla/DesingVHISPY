@@ -9,15 +9,15 @@ while True:
     try:
         # Obtiene el commit más reciente en la rama principal "main"
         repo.remotes.origin.fetch()
-        latest_commit = repo.remotes.origin.refs['main'].commit
+        latest_commit = repo.remotes.origin.refs['origin/Henry'].commit
 
         # Compara el commit actual en la rama principal "main" con el commit más reciente
         if repo.heads.main.commit != latest_commit:
-            print("Actualizando el repositorio en la rama principal 'main'...")
-            repo.remotes.origin.pull('main')
-            print("Repositorio actualizado en la rama principal 'main'.")
+            print("Actualizando el repositorio en la rama 'Henry'...")
+            repo.remotes.origin.pull('origin/Henry')
+            print("Repositorio actualizado en la rama 'Henry'.")
         else:
-            print("No hay cambios en la rama principal 'main'.")
+            print("No hay cambios en la rama 'Henry' 'main'.")
 
     except Exception as e:
         print("Error:", str(e))
