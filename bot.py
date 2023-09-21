@@ -9,7 +9,7 @@ github_repo_url = "https://github.com/HenryCapdevilla/DesingVHISPY.git"
 
 while True:
     try:
-        # Ejecuta "git fetch" para obtener las actualizaciones del repositorio remoto
+        # Ejecuta "git fetch" para obtener las actualizaciones del repositorio
         subprocess.run(["git", "fetch"], cwd=local_repo_path, check=True)
 
         # Comprueba si hay cambios en la rama principal (main)
