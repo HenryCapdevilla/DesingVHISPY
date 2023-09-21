@@ -1,6 +1,16 @@
 import socket
 import threading
 import mysql.connector
+import json
+
+def load_config():
+    try:
+        with open('config.json', 'r') as config_file:
+            config = json.load(config_file)
+            return config
+    except FileNotFoundError:
+        print("El archivo de configuración 'config.json' no se encuentra.")
+        return None
 
 def udp_server(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -12,11 +22,12 @@ def udp_server(port):
         print(f"Received UDP data from {addr}: {data.decode('utf-8')}")
 
         try:
+            database_config = config["database"]
             connection = mysql.connector.connect(
-                host="henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com",
-                user="hdcm",
-                password="hdcm02ds",
-                database="dbHenry"
+                host=database_config["host"],
+                user=database_config["user"],
+                password=database_config["password"],
+                database=database_config["name"]
             )
             
             cursor = connection.cursor()
@@ -24,7 +35,7 @@ def udp_server(port):
             data_to_insert = data.decode("utf-8")
             latitud, longitud, fecha, hora = data_to_insert.split(',') # Asumiendo que los valores están separados por comas
 
-            insert_query = "INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
+            insert_query = config["sql_query"]
             cursor.execute(insert_query, (latitud, longitud, fecha, hora))
 
             connection.commit()

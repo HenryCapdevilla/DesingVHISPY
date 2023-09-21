@@ -1,8 +1,18 @@
 import git
 import time
+import json
+
+def load_config():
+    try:
+        with open('config.json', 'r') as config_file:
+            config = json.load(config_file)
+            return config
+    except FileNotFoundError:
+        print("El archivo de configuración 'config.json' no se encuentra.")
+        return None
 
 repo_path = '/var/www/html'  # Ruta de tu repositorio local
-rama_remota = 'Henry'  # Nombre de la rama remota que deseas verificar
+rama_remota = database_config["rama"]  # Nombre de la rama remota que deseas verificar
 
 while True:
     try:

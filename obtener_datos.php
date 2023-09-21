@@ -1,16 +1,22 @@
 <?php
-$servername = "henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com";
-$username = "hdcm";
-$password = "hdcm02ds";
-$dbname = "dbHenry";
+// Cargar el contenido de config.json
+$config_json = file_get_contents('config.json');
+$config = json_decode($config_json, true);
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Acceder a los valores específicos
+$database_host = $config['database']['host'];
+$database_user = $config['database']['user'];
+$database_password = $config['database']['password'];
+$database_name = $config['database']['name'];
+
+$sql = $config['sql'];
+$conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas ORDER BY FECHA DESC, HORA DESC";
+$sql = $config['sql'];
 $result = $conn->query($sql);
 
 $data = array();
