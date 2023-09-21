@@ -11,7 +11,7 @@ while True:
 
         # Obtiene el commit más reciente en la rama remota
         origin.fetch()
-        rama_remota_ref = f'origin/{rama_remota}'
+        rama_remota_ref = f'{rama_remota}'
         latest_commit = origin.refs[rama_remota_ref].commit
 
         # Compara el commit actual con el commit más reciente en la rama remota
