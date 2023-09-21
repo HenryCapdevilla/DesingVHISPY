@@ -11,7 +11,7 @@ while True:
         # Obtiene el commit más reciente en la rama principal (main)
         origin.fetch()
         head = repo.head.reference
-        latest_commit = origin.refs[f'origin/{head}'].commit
+        latest_commit = origin.refs[f'{head}'].commit
 
         # Compara el commit actual con el commit más reciente
         if repo.head.commit != latest_commit:
