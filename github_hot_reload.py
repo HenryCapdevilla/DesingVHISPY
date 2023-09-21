@@ -9,7 +9,7 @@ while True:
     try:
         # Obtiene el commit más reciente en la rama principal "main"
         repo.remotes.origin.fetch()
-        latest_commit = repo.remotes.origin.refs['origin/Henry'].commit
+        latest_commit = repo.remotes.origin.refs['Henry'].commit
 
         # Compara el commit actual en la rama principal "main" con el commit más reciente
         if repo.heads.main.commit != latest_commit:
