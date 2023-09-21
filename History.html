@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style_History.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="Obtener_mapa.js"></script>
+    <script src="Control_mapa.js"></script>
+    <title>Historial</title>
+</head>
+<body onload="mostrarMarcadoresEnMapa(data)">
+    <div class="Menu">
+        <a href="index.html">
+            <img id="menu_bar" src="Icons/lista.png" alt="Menú">
+        </a>
+        <img id="logo" src="Icons/Logo.png" alt="Menú">
+    </div>
+    <div class="container">
+        <div class="fecha-bloque">
+            <label for="fecha-inicial">
+                <h1>
+                    Fecha Inicial
+                </h1>
+            </label>
+            <input type="date" id="fecha-inicial">
+        </div>
+        <div class="fecha-bloque">
+            <label for="fecha-final">
+                <h1>
+                    Fecha Final
+                </h1>
+            </label>
+            <input type="date" id="fecha-final">
+        </div>
+    </div>
+    <div class="container-map">
+        <div id="map" class="map" style="height: 100%;">
+            <!-- Agrega un botón para avanzar al siguiente dato -->
+        </div>
+    </div>
+    <script>
+        var fechaInicial = document.getElementById("fecha-inicial");
+        var fechaFinal = document.getElementById("fecha-final");
+        var fechaMinFinal = ""; // Variable para almacenar la fecha mínima permitida en fecha final
+
+        fechaInicial.addEventListener('change', function() {
+            // Obtener la fecha seleccionada en el bloque de fecha inicial
+            var fechaSeleccionada = new Date(fechaInicial.value);
+            
+            // Calcular la fecha mínima permitida para la fecha final (al día siguiente de la seleccionada)
+            fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1);
+            fechaMinFinal = fechaSeleccionada.toISOString().split('T')[0];
+            
+            // Actualizar la propiedad min del bloque de fecha final
+            fechaFinal.min = fechaMinFinal;
+            
+            // Resetear el valor de la fecha final si es anterior a la fecha mínima permitida
+            if (fechaFinal.value < fechaMinFinal) {
+                fechaFinal.value = fechaMinFinal;
+            }
+            // Llamar a la función mostrarFechas si ambas fechas están seleccionadas
+            if (fechaInicial.value && fechaFinal.value) {
+                mostrarFechas();
+                console.log("Se han seleccionado ambas fechas");
+            }
+        });
+
+        function mostrarFechas() {
+            var fechaInicialValor = fechaInicial.value;
+            var fechaFinalValor = fechaFinal.value;   
+        
+            // Verificar si ambas fechas han sido ingresadas
+            if (fechaInicialValor && fechaFinalValor) {
+                // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
+                // Realizar una solicitud AJAX para obtener datos del historial
+                console.log("Haciendo la solicitud AJAX")
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        // Utiliza los datos obtenidos para mostrarlos en el mapa
+                        // Por ejemplo, puedes crear marcadores o polilíneas con estos datos.
+                        mostrarMarcadoresEnMapa(data);
+                        // Asigna los datos a la variable global data
+                        window.data = data;
+                        // Llama a avanzarDato() una vez que los datos se hayan cargado
+                        avanzarDato();
+                    }
+                };
+                // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
+                xhr.open("POST", "obtener_datos_history.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
+                xhr.send(formData);
+                console.log("Info recibida")
+            } else {
+                // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
+            }
+        }
+        // Initialize the Leaflet map
+        var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
+        var maxMarkersToShow = 2; // Show only the first and last markers
+        var markers = []; // Array to store markers
+        var polylines = []; // Array to store polylines
+        var timer; // Timer to clear markers if no new data in 30 seconds
+        var centerSet = false; // Flag to check if the center has been set
+        
+        // Title
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map); 
+        
+        // Custom Leaflet control to clear the map
+        var clearButtonControl = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                var button = L.DomUtil.create('a', 'leaflet-control-button', container);
+                button.href = '#';
+                button.title = 'Limpiar Mapa';
+                button.innerHTML = ''; // No text inside the button, just the icon
+
+                L.DomEvent.on(button, 'click', function () {
+                    // Remueve todos los marcadores
+                    for (var i = 0; i < markers.length; i++) {
+                        map.removeLayer(markers[i]);
+                    }
+                markers = [];
+
+                // Remueve todas las polilíneas
+                for (var i = 0; i < polylines.length; i++) {
+                    map.removeLayer(polylines[i]);
+                }
+                polylines = [];
+                });
+            return container;
+            }
+        });
+
+        map.addControl(new clearButtonControl());
+
+        // Custom Leaflet control for advancing and reversing data
+        var dataControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-control-data');
+                    container.innerHTML = '<button onclick="avanzarDato()"><h1>←</h1></button><button onclick="retrocederDato()"><h1>→</h1></button>';
+                    return container;
+            }
+        });
+        
+        var dataControlButton = new dataControl();
+        dataControlButton.addTo(map);
+
+
+        // Custom Leaflet control for info tab
+        var infoTabControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-control-info');
+                container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
+                return container;
+            }
+        });
+
+        var infoTab = new infoTabControl();
+        infoTab.addTo(map);
+
+        // Create additional Control placeholders
+        function addControlPlaceholders(map) {
+            var corners = map._controlCorners,
+                l = 'leaflet-',
+                container = map._controlContainer;
+    
+            function createCorner(vSide, hSide) {
+                var className = l + vSide + ' ' + l + hSide;
+    
+                corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+            }
+    
+            createCorner('verticalcenter', 'left');
+            createCorner('verticalcenter', 'right');
+        }
+        addControlPlaceholders(map);
+    
+        // Change the position of the Zoom Control to a newly created placeholder.
+        map.zoomControl.setPosition('bottomright');
+
+    </script>
+</body>
+</html>
