@@ -22,12 +22,11 @@ def udp_server(port):
         print(f"Received UDP data from {addr}: {data.decode('utf-8')}")
 
         try:
-            database_config = config["database"]
             connection = mysql.connector.connect(
-                host=database_config["host"],
-                user=database_config["user"],
-                password=database_config["password"],
-                database=database_config["name"]
+                host=config["database"]["host"],
+                user=config["database"]["user"],
+                password=config["database"]["password"],
+                database=config["database"]["name"]
             )
             
             cursor = connection.cursor()
