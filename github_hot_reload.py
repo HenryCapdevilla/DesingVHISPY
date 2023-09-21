@@ -12,7 +12,7 @@ def load_config():
         return None
 
 repo_path = '/var/www/html'  # Ruta de tu repositorio local
-rama_remota = database_config["rama"]  # Nombre de la rama remota que deseas verificar
+rama_remota = database["rama"]  # Nombre de la rama remota que deseas verificar
 
 while True:
     try:
