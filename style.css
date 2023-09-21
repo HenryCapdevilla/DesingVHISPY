@@ -88,8 +88,8 @@ th {
 .leaflet-control-button {
     background-image: url('broom.jpg');
     background-size: cover;
-    width: 32px; /* Set the width and height to match your image size */
-    height: 32px;
+    width: 50px; /* Set the width and height to match your image size */
+    height: 50px;
 }
 
 /* Style for the info tab */
