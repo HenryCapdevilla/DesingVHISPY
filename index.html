@@ -167,6 +167,7 @@
             document.getElementById("timestamp").textContent = data[0].fecha + " " + data[0].hora;
         }
     }
+
     // Create additional Control placeholders
     function addControlPlaceholders(map) {
         var corners = map._controlCorners,
@@ -186,6 +187,7 @@
 
     // Change the position of the Zoom Control to a newly created placeholder.
     map.zoomControl.setPosition('bottomright');
+
     </script>
 </body>
 </html>
