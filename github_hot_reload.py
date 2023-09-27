@@ -1,25 +1,30 @@
 import git
 import time
+import json
 
-repo_path = '/var/www/html'  # Cambia esto a la ruta de tu repositorio
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
 
-repo = git.Repo(repo_path)
+repo_path = '/var/www/html'  # Ruta de tu repositorio local
+rama_remota = config["database"]["rama"]  # Nombre de la rama remota que deseas verificar
 
 while True:
     try:
-        # Obtiene el commit más reciente en la rama principal
+        repo = git.Repo(repo_path)
         origin = repo.remotes.origin
-        origin.fetch()
-        head = repo.head.reference
-        latest_commit = origin.refs[head].commit
 
-        # Compara el commit actual con el commit más reciente
+        # Obtiene el commit más reciente en la rama remota
+        origin.fetch()
+        rama_remota_ref = f'{rama_remota}'
+        latest_commit = origin.refs[rama_remota_ref].commit
+
+        # Compara el commit actual con el commit más reciente en la rama remota
         if repo.head.commit != latest_commit:
-            print("Actualizando el repositorio...")
-            repo.remotes.origin.pull()
+            print(f"Actualizando el repositorio desde la rama '{rama_remota}'...")
+            repo.remotes.origin.pull(rama_remota_ref)
             print("Repositorio actualizado.")
         else:
-            print("No hay cambios en el repositorio.")
+            print("No hay cambios en la rama remota.")
 
     except Exception as e:
         print("Error:", str(e))

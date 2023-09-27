@@ -1,16 +1,16 @@
 <?php
 $servername = "henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com";
 $username = "hdcm";
-$password = "hdcm02ds.";
+$password = "hdcm02ds";
 $dbname = "dbHenry";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas ORDER BY FECHA DESC, HORA DESC";
+$sql = $config['sql'];
 $result = $conn->query($sql);
 
 $data = array();
