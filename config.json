@@ -1,0 +1,12 @@
+{
+  "database": {
+      "host": "database-1.cvdwcehcq5em.us-east-2.rds.amazonaws.com",
+      "user": "Buabs",
+      "password": "buabs123",
+      "name": "BuabsBD",
+      "rama": "Gabs"
+  },
+  "sql": "SELECT LONGITUD, LATITUD, FECHA, HORA FROM tabla ORDER BY FECHA DESC, HORA DESC",
+  "sql_query": "INSERT INTO tabla (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)",
+  "sql_h" : "SELECT LONGITUD, LATITUD, FECHA, HORA FROM tabla  WHERE FECHA BETWEEN '$fechaInicial' AND '$fechaFinal' ORDER BY FECHA DESC, HORA DESC"
+}

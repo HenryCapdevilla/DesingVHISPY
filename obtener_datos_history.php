@@ -9,14 +9,18 @@ $database_user = $config['database']['user'];
 $database_password = $config['database']['password'];
 $database_name = $config['database']['name'];
 
-$sql = $config['sql'];
+// Obtener las fechas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
+$fechaInicial = $_POST["fecha_inicial"];
+$fechaFinal = $_POST["fecha_final"];
+
 $conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = $config['sql'];
+// Construir la consulta SQL con las fechas de inicio y fin
+$sql = str_replace('$fechaInicial', $fechaInicial, str_replace('$fechaFinal', $fechaFinal, $config['sql_h']));
 $result = $conn->query($sql);
 
 $data = array();
@@ -29,8 +33,6 @@ while ($row = $result->fetch_assoc()) {
         "hora" => $row["HORA"]
     );
 }
-
-$data = array_slice($data, 0, 10); // Get the last 10 values
 
 $conn->close();
 
