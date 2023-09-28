@@ -9,12 +9,6 @@ $database_user = $config['database']['user'];
 $database_password = $config['database']['password'];
 $database_name = $config['database']['name'];
 
-// Obtener las fechas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
-$fechaInicial = $_POST["fecha_inicial"];
-$fechaFinal = $_POST["fecha_final"];
-$horaInicio = $_POST["hora_inicio"];
-$horaFin = $_POST["hora_fin"];
-
 // Obtener las fechas de inicio y fin, así como las horas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
 $fechaInicioFin = explode(" - ", $_POST["fecha_inicio_fin"]);
 $fechaInicial = $fechaInicioFin[0];
