@@ -15,6 +15,13 @@ $fechaFinal = $_POST["fecha_final"];
 $horaInicio = $_POST["hora_inicio"];
 $horaFin = $_POST["hora_fin"];
 
+// Obtener las fechas de inicio y fin, así como las horas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
+$fechaInicioFin = explode(" - ", $_POST["fecha_inicio_fin"]);
+$fechaInicial = $fechaInicioFin[0];
+$fechaFinal = $fechaInicioFin[1];
+$horaInicio = $_POST["hora_inicio"];
+$horaFin = $_POST["hora_fin"];
+
 $conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {
