@@ -9,34 +9,14 @@ $database_user = $config['database']['user'];
 $database_password = $config['database']['password'];
 $database_name = $config['database']['name'];
 
-// Obtener las fechas de inicio y fin, así como las horas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
-$fechaInicioFin = explode(" - ", $_POST["fecha_inicio_fin"]);
-$fechaInicial = $fechaInicioFin[0];
-$fechaFinal = $fechaInicioFin[1];
-$horaInicio = $_POST["hora_inicio"];
-$horaFin = $_POST["hora_fin"];
+$fechaInicial = $_POST["fecha_inicial"];
+$fechaFinal = $_POST["fecha_final"];
 
 $conn = new mysqli($database_host, $database_user, $database_password, $database_name);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
-// Construir la consulta SQL con las fechas y horas de inicio y fin
-$sql = "SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas 
-        WHERE FECHA BETWEEN ? AND ? 
-        AND HORA BETWEEN ? AND ?
-        ORDER BY FECHA DESC, HORA DESC";
-// Preparar la declaración SQL
-$stmt = $conn->prepare($sql);
-// Asociar los valores de las fechas y horas a los marcadores de posición en la consulta SQL
-$stmt->bind_param("ssss", $fechaInicial, $fechaFinal, $horaInicio, $horaFin);
-// Ejecutar la consulta SQL
-$stmt->execute();
-// Obtener el resultado de la consulta
-$result = $stmt->get_result();
-
-$data = array();
 
 while ($row = $result->fetch_assoc()) {
     $data[] = array(
@@ -47,9 +27,8 @@ while ($row = $result->fetch_assoc()) {
     );
 }
 
-// Cerrar la conexión y liberar los recursos
-$stmt->close();
-$conn->close();
+$sql = str_replace('$fechaInicial', $fechaInicial, str_replace('$fechaFinal', $fechaFinal, $config['sql_h']));
+$result = $conn->query($sql);
 
 // Devolver los datos en formato JSON
 header("Content-Type: application/json");
