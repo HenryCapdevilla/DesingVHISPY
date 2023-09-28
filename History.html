@@ -90,25 +90,10 @@
         function mostrarFechas() {
             var fechaInicialValor = fechaInicial.value;
             var fechaFinalValor = fechaFinal.value;
-            var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
-            var fechaHoraFin = fechaFinalValor + " " + horaFinValor;
-
-            // Validar la fecha y hora inicial
-            var fechaHoraInicioObj = new Date(fechaHoraInicio);
-            if (isNaN(fechaHoraInicioObj)) {
-                alert("La fecha y hora de inicio no son válidas.");
-                return; // Detener la ejecución si la fecha y hora de inicio son inválidas
-            }         
-
-            // Validar la fecha y hora final
-            var fechaHoraFinObj = new Date(fechaHoraFin);
-            if (isNaN(fechaHoraFinObj)) {
-                alert("La fecha y hora de fin no son válidas.");
-                return; // Detener la ejecución si la fecha y hora de fin son inválidas
-            }
-        
+            var HoraInicial = new Date(horaInicioValor.value);
+            var HoraFinal = new Date(horaFinValor.value);
             // Verificar si ambas fechas han sido ingresadas
-            if (fechaInicialValor && fechaFinalValor && horaInicioValor && horaFinValor) {
+            if (fechaInicialValor && fechaFinalValor && HoraInicial && HoraFinal) {
                 // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
                 // Realizar una solicitud AJAX para obtener datos del historial
                 console.log("Haciendo la solicitud AJAX")
