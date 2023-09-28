@@ -36,7 +36,6 @@ $stmt->execute();
 // Obtener el resultado de la consulta
 $result = $stmt->get_result();
 
-
 $data = array();
 
 while ($row = $result->fetch_assoc()) {

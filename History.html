@@ -121,6 +121,8 @@
                 var formData = "fecha_inicio_fin=" + fechaHoraInicio + " - " + fechaHoraFin;
                 xhr.send(formData);
                 console.log("Info recibida");
+                console.log(formData);
+                console.log(data);
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
                 alert("Por favor, selecciona ambas fechas y horas correspondidas antes de buscar.");
