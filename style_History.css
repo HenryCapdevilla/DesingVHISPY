@@ -49,7 +49,14 @@ body {
     display: flex;
     text-align: center;
     padding-top: 1em;
-    padding-bottom: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
+    justify-content: space-around;
+}
+
+.container-hora {
+    display: flex;
+    text-align: center;
     padding-right: 1em;
     padding-left: 1em;
     justify-content: space-around;
@@ -63,7 +70,7 @@ body {
 .container-map {
     border-radius: 10px;
     width: 100%;
-    height: 65vh; /* Cambia la altura al 100vh para ocupar toda la pantalla */
+    height: 60vh; /* Cambia la altura al 100vh para ocupar toda la pantalla */
 }
 
 h1 {
@@ -112,6 +119,13 @@ button:active {
     height: 20%;
 }
 
+.hora-bloque {
+    background-color: #a02ad2;
+    border: 1px solid #ccc;
+    border-radius: 2em;
+    width: 37%;
+    height: 15%;
+}
 /* Style for the info tab */
 .leaflet-control-info {
     background-color: white;

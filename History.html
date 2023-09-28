@@ -35,6 +35,18 @@
             <input type="date" id="fecha-final">
         </div>
     </div>
+    <div class="container-hora">
+        <div class="hora-bloque">
+            <label for="hora-inicio">
+                <h1>Hora de inicio: <input type="time" id="hora-inicio" name="hora-inicio" required></h1>
+            </label>
+        </div>
+        <div class="hora-bloque">
+            <label for="hora-fin">
+                <h1>Hora de finalización: <input type="time" id="hora-fin" name="hora-fin" required> </h1>
+            </label>
+        </div>
+    </div>
     <div class="container-btn">
         <button id="Search">
             <h1>Buscar</h1>
@@ -47,6 +59,8 @@
         var fechaInicial = document.getElementById("fecha-inicial");
         var fechaFinal = document.getElementById("fecha-final");
         var fechaMinFinal = ""; // Variable para almacenar la fecha mínima permitida en fecha final
+        var horaInicioValor = document.getElementById("hora-inicio").value;
+        var horaFinValor = document.getElementById("hora-fin").value;
 
         fechaInicial.addEventListener('change', function() {
             // Obtener la fecha seleccionada en el bloque de fecha inicial
@@ -79,7 +93,15 @@
             var fechaFinalValor = fechaFinal.value;   
         
             // Verificar si ambas fechas han sido ingresadas
-            if (fechaInicialValor && fechaFinalValor) {
+            if (fechaInicialValor && fechaFinalValor && horaInicioValor && horaFinValor) {
+                // Verificar si todas las entradas están completas
+                // Construir la fecha y hora de inicio
+                var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
+
+                // Construir la fecha y hora de finalización
+                var fechaHoraFin = fechaFinalValor + " " + horaFinValor;
+
+                // ... Resto del código para realizar la solicitud AJAX con el rango de fechas y horas
                 // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
                 // Realizar una solicitud AJAX para obtener datos del historial
                 console.log("Haciendo la solicitud AJAX")
@@ -99,12 +121,13 @@
                 // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
                 xhr.open("POST", "obtener_datos_history.php", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor;
+                // Construir el formData con fechas y horas
+                var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor + "&hora_inicio=" + horaInicioValor + "&hora_fin=" + horaFinValor;
                 xhr.send(formData);
                 console.log("Info recibida")
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
-                alert("Por favor, selecciona ambas fechas antes de buscar.");
+                alert("Por favor, selecciona ambas fechas y horas correspondidas antes de buscar.");
             }
         }
 
