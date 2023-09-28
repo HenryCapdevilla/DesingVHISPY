@@ -68,7 +68,6 @@
             
              // Obtener la fecha mínima permitida para la fecha final
             var fechaMinFinal = new Date(fechaSeleccionada);
-            fechaMinFinal.setDate(fechaSeleccionada.getDate() + 1); // Suma un día
     
             // Formatear la fecha mínima en formato ISO para establecerla como valor mínimo en fecha final
             var fechaMinFinalISO = fechaMinFinal.toISOString().split('T')[0];
@@ -92,7 +91,21 @@
             var fechaInicialValor = fechaInicial.value;
             var fechaFinalValor = fechaFinal.value;
             var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
-            var fechaHoraFin = fechaFinalValor + " " + horaFinValor;   
+            var fechaHoraFin = fechaFinalValor + " " + horaFinValor;
+
+            // Validar la fecha y hora inicial
+            var fechaHoraInicioObj = new Date(fechaHoraInicio);
+            if (isNaN(fechaHoraInicioObj)) {
+                alert("La fecha y hora de inicio no son válidas.");
+                return; // Detener la ejecución si la fecha y hora de inicio son inválidas
+            }         
+
+            // Validar la fecha y hora final
+            var fechaHoraFinObj = new Date(fechaHoraFin);
+            if (isNaN(fechaHoraFinObj)) {
+                alert("La fecha y hora de fin no son válidas.");
+                return; // Detener la ejecución si la fecha y hora de fin son inválidas
+            }
         
             // Verificar si ambas fechas han sido ingresadas
             if (fechaInicialValor && fechaFinalValor && horaInicioValor && horaFinValor) {
