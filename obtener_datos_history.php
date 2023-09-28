@@ -1,8 +1,8 @@
 <?php
-$servername = "henrydb.cfsjsehoiurs.us-east-2.rds.amazonaws.com";
-$username = "hdcm";
-$password = "hdcm02ds";
-$dbname = "dbHenry";
+$servername = "diselec-db.cccbupvd7g7d.us-east-2.rds.amazonaws.com";
+$username = "robin";
+$password = "Metallica9801.";
+$dbname = "diselec";
 
 // Obtener las fechas de inicio y fin desde la solicitud POST (puedes usar GET si lo prefieres)
 $fechaInicial = $_POST["fecha_inicial"];

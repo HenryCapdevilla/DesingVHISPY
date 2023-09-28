@@ -1,6 +1,8 @@
 import socket
 import threading
 import mysql.connector
+import json
+
 
 def udp_server(port):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -18,7 +20,7 @@ def udp_server(port):
                 password=config["database"]["password"],
                 database=config["database"]["name"]
             )
-            
+
             cursor = connection.cursor()
 
             data_to_insert = data.decode("utf-8")
@@ -46,7 +48,7 @@ def udp_server(port):
 if __name__ == "__main__":
     with open('config.json', 'r') as config_file:
         config = json.load(config_file)
-    
+
     port = 25000
     udp_thread = threading.Thread(target=udp_server, args=(port,))
     udp_thread.start()
