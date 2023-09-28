@@ -90,15 +90,17 @@
         function mostrarFechas() {
             var fechaInicialValor = fechaInicial.value;
             var fechaFinalValor = fechaFinal.value;
-            var HoraInicial = new Date(horaInicioValor.value);
-            var HoraFinal = new Date(horaFinValor.value);
-            console.log(HoraFinal)
-            console.log(HoraInicial)
-            // Verificar si ambas fechas han sido ingresadas
-            if (fechaInicialValor && fechaFinalValor && HoraInicial && HoraFinal) {
-                // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
-                // Realizar una solicitud AJAX para obtener datos del historial
-                console.log("Haciendo la solicitud AJAX")
+            var horaInicioValor = document.getElementById("hora-inicio").value;
+            var horaFinValor = document.getElementById("hora-fin").value;
+            
+            // Verificar si ambas fechas y horas han sido ingresadas
+            if (fechaInicialValor && fechaFinalValor && horaInicioValor && horaFinValor) {
+                // Concatenar las fechas y horas en el formato deseado
+                var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
+                var fechaHoraFin = fechaFinalValor + " " + horaFinValor;
+                
+                // Realizar la solicitud AJAX con las fechas y horas concatenadas
+                console.log("Haciendo la solicitud AJAX");
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -115,15 +117,16 @@
                 // Envía una solicitud POST al archivo PHP que obtiene los datos del historial
                 xhr.open("POST", "obtener_datos_history.php", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                // Construir el formData con fechas y horas
-                var formData = "fecha_inicial=" + fechaInicialValor + "&fecha_final=" + fechaFinalValor + "&hora_inicio=" + horaInicioValor + "&hora_fin=" + horaFinValor;
+                // Construir el formData con fechas y horas concatenadas
+                var formData = "fecha_inicio_fin=" + fechaHoraInicio + " - " + fechaHoraFin;
                 xhr.send(formData);
-                console.log("Info recibida")
+                console.log("Info recibida");
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
                 alert("Por favor, selecciona ambas fechas y horas correspondidas antes de buscar.");
             }
         }
+        
 
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
