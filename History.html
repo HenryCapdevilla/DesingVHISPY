@@ -90,18 +90,12 @@
 
         function mostrarFechas() {
             var fechaInicialValor = fechaInicial.value;
-            var fechaFinalValor = fechaFinal.value;   
+            var fechaFinalValor = fechaFinal.value;
+            var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
+            var fechaHoraFin = fechaFinalValor + " " + horaFinValor;   
         
             // Verificar si ambas fechas han sido ingresadas
             if (fechaInicialValor && fechaFinalValor && horaInicioValor && horaFinValor) {
-                // Verificar si todas las entradas están completas
-                // Construir la fecha y hora de inicio
-                var fechaHoraInicio = fechaInicialValor + " " + horaInicioValor;
-
-                // Construir la fecha y hora de finalización
-                var fechaHoraFin = fechaFinalValor + " " + horaFinValor;
-
-                // ... Resto del código para realizar la solicitud AJAX con el rango de fechas y horas
                 // Ambas fechas han sido ingresadas, puedes continuar con la solicitud AJAX y mostrar en el mapa.
                 // Realizar una solicitud AJAX para obtener datos del historial
                 console.log("Haciendo la solicitud AJAX")
