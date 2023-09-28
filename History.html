@@ -35,10 +35,13 @@
             <input type="date" id="fecha-final">
         </div>
     </div>
+    <div class="container-btn">
+        <button id="Search">
+            <h1>Buscar</h1>
+        </button>
+    </div>
     <div class="container-map">
-        <div id="map" class="map" style="height: 100%;">
-            <!-- Agrega un botón para avanzar al siguiente dato -->
-        </div>
+        <div id="map" class="map" style="height: 100%;"></div>
     </div>
     <script>
         var fechaInicial = document.getElementById("fecha-inicial");
@@ -49,22 +52,26 @@
             // Obtener la fecha seleccionada en el bloque de fecha inicial
             var fechaSeleccionada = new Date(fechaInicial.value);
             
-            // Calcular la fecha mínima permitida para la fecha final (al día siguiente de la seleccionada)
-            fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1);
-            fechaMinFinal = fechaSeleccionada.toISOString().split('T')[0];
-            
+             // Obtener la fecha mínima permitida para la fecha final
+            var fechaMinFinal = new Date(fechaSeleccionada);
+            fechaMinFinal.setDate(fechaSeleccionada.getDate() + 1); // Suma un día
+    
+            // Formatear la fecha mínima en formato ISO para establecerla como valor mínimo en fecha final
+            var fechaMinFinalISO = fechaMinFinal.toISOString().split('T')[0];
+    
             // Actualizar la propiedad min del bloque de fecha final
-            fechaFinal.min = fechaMinFinal;
-            
-            // Resetear el valor de la fecha final si es anterior a la fecha mínima permitida
-            if (fechaFinal.value < fechaMinFinal) {
-                fechaFinal.value = fechaMinFinal;
+            fechaFinal.min = fechaMinFinalISO;
+    
+            // Restablecer el valor de fecha final si es anterior a la fecha mínima permitida
+            if (fechaFinal.value < fechaMinFinalISO) {
+                fechaFinal.value = fechaMinFinalISO;
             }
-            // Llamar a la función mostrarFechas si ambas fechas están seleccionadas
-            if (fechaInicial.value && fechaFinal.value) {
+
+            var botonBuscar = document.getElementById("Search");
+
+            botonBuscar.addEventListener('click', function() {
                 mostrarFechas();
-                console.log("Se han seleccionado ambas fechas");
-            }
+            });
         });
 
         function mostrarFechas() {
@@ -97,8 +104,10 @@
                 console.log("Info recibida")
             } else {
                 // Una de las fechas (o ambas) aún no ha sido ingresada, no hagas nada o muestra un mensaje de error.
+                alert("Por favor, selecciona ambas fechas antes de buscar.");
             }
         }
+
         // Initialize the Leaflet map
         var map = L.map('map').setView([0, 0], 2); // Set initial map center and zoom level
         var maxMarkersToShow = 2; // Show only the first and last markers

@@ -62,10 +62,8 @@ function mostrarMarcadoresEnMapa(data) {
     if (!consultaRealizada && coordenadas.length > 0) {
         var bounds = L.latLngBounds(coordenadas);
         map.fitBounds(bounds);
-
         // Realiza un zoom adicional para centrar el mapa en la ubicación de la consulta
         map.setZoom(12); // Puedes ajustar el nivel de zoom según tus necesidades
-        
         // Establece la bandera de consulta realizada en true
     }
 }

@@ -55,11 +55,15 @@ body {
     justify-content: space-around;
 }
 
-
+.container-btn{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
 .container-map {
     border-radius: 10px;
     width: 100%;
-    height: 70vh; /* Cambia la altura al 100vh para ocupar toda la pantalla */
+    height: 65vh; /* Cambia la altura al 100vh para ocupar toda la pantalla */
 }
 
 h1 {
@@ -73,6 +77,9 @@ label {
 }
 
 button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
     background-color: #a02ad2;
     border: 1px solid #ccc;
     border-radius: 1em;
