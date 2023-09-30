@@ -82,7 +82,7 @@ body {
 .sidebar.active  .nav_list li{
     position: relative;
     list-style: none;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
 }
 
 .sidebar.active  .nav_list li .date_content {
