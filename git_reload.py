@@ -5,7 +5,7 @@ import json
 with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 
-repo_path = 'SPsy/'  # Ruta de tu repositorio local
+repo_path = './'  # Ruta de tu repositorio local
 rama_remota = config["database"]["rama"]  # Nombre de la rama remota que deseas verificar
 
 while True:
