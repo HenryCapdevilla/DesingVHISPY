@@ -13,7 +13,7 @@ router.get("/latest", async (req, res) => {
         // Esto dependerá de la estructura de tu base de datos y de cómo almacenas los datos
         
         // Ejemplo de consulta SQL (debes adaptarla a tu base de datos):
-        const sqlQuery = "SELECT LOGINTUD, LATITUD, FECHA, HORA FROM gps_data ORDER BY fecha DESC, hora DESC LIMIT 1";
+        const sqlQuery = "SELECT longitud, latitud, fecha, hora FROM gps_data ORDER BY fecha DESC, hora DESC LIMIT 1";
         
         // Ejecutar la consulta en la base de datos
         cnx.pool.query(sqlQuery, (error, results) => {
