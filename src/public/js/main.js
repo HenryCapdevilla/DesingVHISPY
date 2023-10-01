@@ -60,7 +60,7 @@ var histPenguinMarker = L.icon({
 })
 
 //Giving an initial value to the marker
-marker = L.marker([11, -74], {icon: penguinMarker})
+marker = L.marker([11, -74], {iconUrl: 'marker.png'})
 
 var polyline;
 var polylinePoints;
