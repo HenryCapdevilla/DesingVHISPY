@@ -205,7 +205,7 @@ function mostrarDatoActual() {
 
 
 function centerMap() {
-    map.setView([lat,lon],15);
+    map.setView([10.965633, -74.8215339], 12);
 }
 
 button = document.getElementById('historics');

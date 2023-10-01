@@ -251,11 +251,11 @@ body {
 }
 #map-template  {
     height: 100%;
-    width: 80%;
-    position: absolute;
+    width: 86%;
+    position: relative;
     background: #F2EFE9;
-    top: 0px; /* Ajusta la posición vertical según tus necesidades */
-    left: 70px;
+    top: 0px;
+    left: 0px;
 }
 
 /* Style for the clear button */
