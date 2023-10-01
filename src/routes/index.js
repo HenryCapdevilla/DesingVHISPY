@@ -1,5 +1,7 @@
 //routes
 const router = require('express').Router();
+const cnx = require('../cnx'); // Ajusta la ruta según la ubicación real del módulo cnx
+
 
 router.get("/", (req,res) => {
     res.render("index");
