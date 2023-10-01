@@ -88,14 +88,13 @@
                     </div>
                 </div>
             </li>
-            <li id="pickingMap_btn">
+            <li id="pickingMap_btn" class="show-on-condition">
                 <div class="iocn-link-rt">
                     <a href="#" id="pickingMap">
                         <i class='bx bxs-map-pin'></i>
                         <span class="links_name">Recorridos por lugar</span>
                     </a>
                 </div>
-
             </li>
         </ul>
     </div>
@@ -192,6 +191,30 @@
         btn.onclick = function() {
             sidebar.classList.toggle("active");
         }
+
+        // Obtén referencias a los elementos relevantes
+        const recorridosPorFechaLink = document.getElementById('recorridos');
+        const start_date = document.getElementById('start_date');
+        const start_time = document.getElementById('start_time');
+        const end_date = document.getElementById('end_date');
+        const end_time = document.getElementById('end_time');
+        const pickingMapBtn = document.getElementById('pickingMap_btn');
+
+        // Agrega un evento para verificar cuándo "Recorridos por fecha" se activa
+        recorridosPorFechaLink.addEventListener('click', function () {
+            // Verifica si se ha ingresado una fecha y hora de inicio y fin
+            const startDateValue = start_date.value.trim();
+            const startTimeValue = start_time.value.trim();
+            const endDateValue = end_date.value.trim();
+            const endTimeValue = end_time.value.trim();
+
+            // Muestra u oculta "Recorridos por lugar" según las condiciones
+            if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
+                pickingMapBtn.classList.remove('show-on-condition'); // Oculta "Recorridos por lugar"
+            } else {
+                pickingMapBtn.classList.add('show-on-condition'); // Muestra "Recorridos por lugar"
+            }
+        });
 
 
     </script>
