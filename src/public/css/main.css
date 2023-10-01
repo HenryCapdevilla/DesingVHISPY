@@ -148,7 +148,18 @@ body {
     text-align: center;
 }
 
+.sidebar .subtitles{
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.1s ease;
+}
 
+.sidebar.active .subtitles{
+    color: white;
+    opacity: 1;
+    margin-left: 10px;
+    font-size: 17px;
+}
 
 .sidebar .links_name{
     opacity: 0;
