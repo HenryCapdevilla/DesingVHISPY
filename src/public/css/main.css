@@ -161,6 +161,9 @@ body {
     font-size: 17px;
 }
 
+#btn-gps{
+    padding-left: 2em;
+}
 .sidebar .links_name{
     opacity: 0;
     pointer-events: none;
