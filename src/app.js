@@ -41,10 +41,9 @@ udp.bind(udpPort,udpHost);
 
 // Ruta para agregar datos GPS desde el servidor UDP
 app.get('/data', (req, res) => {
-    // Usa los valores del último mensaje UDP recibido
-    const udpData = data[0].split(', '); // Separar la cadena por comas y espacio
 
-    if (udpData.length >= 4) {
+    if (typeof data[0] === 'string' && data[0].includes(',')) {
+        const udpData = data[0].split(', ');
         const longitude = parseFloat(udpData[0]);
         const latitude = parseFloat(udpData[1]);
         const date = udpData[2];
@@ -56,12 +55,10 @@ app.get('/data', (req, res) => {
         console.log("Latitud: " + latitude)
         console.log("Fecha: " + date)
         console.log("Tiempo: " + time)
-    
-        // Resto del código
     } else {
         console.error("El mensaje UDP no tiene el formato esperado.");
         res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
-    }
+    }    
     
     // Envía una respuesta con los valores recibidos
     res.json({
