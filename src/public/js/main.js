@@ -35,7 +35,7 @@ end_date.addEventListener('click', function (){
 
 // LEAFLET SETTINGS
 // build leaflet map with a specific template
-const map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
+var map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
 const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
 L.tileLayer(tileURL).addTo(map);
 
@@ -100,6 +100,25 @@ var infoTabControl = L.Control.extend({
 var infoTab = new infoTabControl();
 infoTab.addTo(map);
 
+// Create additional Control placeholders
+function addControlPlaceholders(map) {
+    var corners = map._controlCorners,
+        l = 'leaflet-',
+        container = map._controlContainer;
+
+        function createCorner(vSide, hSide) {
+            var className = l + vSide + ' ' + l + hSide;
+
+            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+        }
+
+    createCorner('verticalcenter', 'left');
+    createCorner('verticalcenter', 'right');
+}
+addControlPlaceholders(map);
+
+// Change the position of the Zoom Control to a newly created placeholder.
+map.zoomControl.setPosition('bottomright');
 //Giving an initial value to the marker
 marker = L.marker([11, -74], {iconUrl: 'marker.png'})
 
