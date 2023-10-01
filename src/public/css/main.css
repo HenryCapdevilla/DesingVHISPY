@@ -4,7 +4,6 @@
 
 *{
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
@@ -18,6 +17,7 @@ body {
 }
 
 .sidebar{
+    padding: 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -250,7 +250,7 @@ body {
     color: black;
 }
 #map-template  {
-    height: 100%;
+    height: 0%;
     width: 100%;
     position: absolute;
     background: #F2EFE9;
