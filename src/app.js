@@ -43,17 +43,26 @@ udp.bind(udpPort,udpHost);
 app.get('/data', (req, res) => {
     // Usa los valores del último mensaje UDP recibido
     const udpData = data[0].split(', '); // Separar la cadena por comas y espacio
-    const longitude = parseFloat(udpData[0]); // Convertir a número flotante
-    const latitude = parseFloat(udpData[1]); // Convertir a número flotante
-    const date = udpData[2];
-    const time = udpData[3];
+
+    if (udpData.length >= 4) {
+        const longitude = parseFloat(udpData[0]);
+        const latitude = parseFloat(udpData[1]);
+        const date = udpData[2];
+        const time = udpData[3];
+
+        // Llama a la función addGpsData con los valores del último mensaje UDP
+        addGpsData(longitude, latitude, date, time);
+        console.log("Longitud: " + longitude)
+        console.log("Latitud: " + latitude)
+        console.log("Fecha: " + date)
+        console.log("Tiempo: " + time)
     
-    // Llama a la función addGpsData con los valores del último mensaje UDP
-    addGpsData(longitude, latitude, date, time);
-    console.log("Longitud: " + longitude)
-    console.log("Latitud: " + latitude)
-    console.log("Fecha: " + date)
-    console.log("Tiempo: " + time)
+        // Resto del código
+    } else {
+        console.error("El mensaje UDP no tiene el formato esperado.");
+        res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
+    }
+    
     // Envía una respuesta con los valores recibidos
     res.json({
         lon: longitude,
