@@ -13,9 +13,9 @@ const connect = () =>{
     });
 }
 
-const addGpsData = (date, time, latitude, longitude) => {
-    let query = "INSERT INTO gps_data (fecha,hora,latitud,longitud)"
-        +"VALUES ('"+date+"','"+time+"','"+latitude+"','"+longitude+"')";
+const addGpsData = (longitude, latitude, date, time) => {
+    let query = "INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
+        +"VALUES ('"+longitude+"','"+latitude+"','"+date+"','"+time+"')";
     pool.query(query, function (err) {
         if(err) throw err;
     })

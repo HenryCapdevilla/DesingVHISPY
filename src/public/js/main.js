@@ -73,7 +73,6 @@ let prelon = 0;
 async function getData() {
     const response = await fetch("./data", {});
     let responseJson = await response.json();
-    console.log(lat, lon, date, time)
 
     if (responseJson && responseJson.length >= 4) {
         // Divide la cadena en partes separadas
@@ -85,7 +84,6 @@ async function getData() {
             const lon = parseFloat(parts[1]);
             const date = parts[2];
             const time = parts[3];
-            console.log(lat, lon, date, time)
 
             document.getElementById("date").innerHTML = date;
             document.getElementById("time").innerHTML = time;
