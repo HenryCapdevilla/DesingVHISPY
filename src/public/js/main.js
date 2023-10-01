@@ -34,49 +34,58 @@ end_date.addEventListener('click', function (){
 })
 
 // LEAFLET SETTINGS
-// Variables para mantener un seguimiento de marcadores y polilíneas
-let markers = [];
-let polylines = [];
-let prelat = 0;
-let prelon = 0;
-let marker = null;
 // build leaflet map with a specific template
 var map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
 const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
 L.tileLayer(tileURL).addTo(map);
 
-// Función para agregar marcadores y polilíneas
-function addMarkerAndPolyline(lat, lon, date, time) {
-    // Crea un marcador
-    const newMarker = L.marker([lat, lon]).addTo(map);
-    newMarker.bindPopup(`Fecha: ${date}<br>Hora: ${time}`).openPopup();
+// Variable para rastrear el marcador del último valor
+let lastMarker = null;
 
-    // Agrega el marcador a la lista de marcadores
-    markers.push(newMarker);
+// Función para obtener y mostrar el último valor en el mapa
+async function getLastValue() {
+    try {
+        const response = await fetch("/latest"); // Reemplaza "/latest" con la ruta correcta en tu servidor
+        if (!response.ok) {
+            throw new Error("Error al obtener el último valor");
+        }
+        const latestData = await response.json();
 
-    // Crea una polilínea si hay coordenadas anteriores
-    if (prelat !== 0 && prelon !== 0) {
-        const polyline = L.polyline([[prelat, prelon], [lat, lon]], { color: 'blue' }).addTo(map);
-        polylines.push(polyline);
+        if (latestData) {
+            const lat = parseFloat(latestData.latitud);
+            const lon = parseFloat(latestData.longitud);
+            const date = latestData.fecha;
+            const time = latestData.hora;
+
+            // Elimina el marcador anterior del último valor
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+            }
+
+            // Crea un nuevo marcador para el último valor
+            lastMarker = L.marker([lat, lon]).addTo(map);
+            lastMarker.bindPopup(`Fecha: ${date}<br>Hora: ${time}`).openPopup();
+
+            // Crea una polilínea si hay coordenadas anteriores
+            if (prelat !== 0 && prelon !== 0) {
+                const polyline = L.polyline([[prelat, prelon], [lat, lon]], { color: 'blue' }).addTo(map);
+                polylines.push(polyline);
+            }
+
+            // Actualiza las coordenadas anteriores
+            prelat = lat;
+            prelon = lon;
+        }
+    }catch (error) {
+        console.error("Error al obtener el último valor:", error);
     }
-
-    // Actualiza las coordenadas anteriores
-    prelat = lat;
-    prelon = lon;
 }
 
-// Función para eliminar todos los marcadores y polilíneas
-function clearMarkersAndPolylines() {
-    markers.forEach(marker => {
-        map.removeLayer(marker);
-    });
-    markers = [];
+// Establece un intervalo para obtener el último valor cada X segundos (por ejemplo, cada 5 segundos)
+setInterval(() => {
+    getLastValue();
+}, 5000); // Cambia el valor 5000 por el intervalo deseado en milisegundos
 
-    polylines.forEach(polyline => {
-        map.removeLayer(polyline);
-    });
-    polylines = [];
-}
 
 /* CREATING MARKERS */
 //Last position marker
@@ -158,75 +167,6 @@ addControlPlaceholders(map);
 
 // Change the position of the Zoom Control to a newly created placeholder.
 map.zoomControl.setPosition('bottomright');
-//Giving an initial value to the marker
-marker = L.marker([11, -74], {iconUrl: './marker.png'})
-
-var polyline;
-var polylinePoints;
-let lat = 0;
-let lon = 0;
-
-async function getData() {
-    const response = await fetch("./data", {});
-    let responseJson = await response.json();
-
-    if (responseJson && responseJson.length >= 4) {
-        // Divide la cadena en partes separadas
-        const parts = responseJson[0].split(", ");
-
-        // Verifica que haya al menos 4 partes
-        if (parts.length >= 4) {
-            const lat = parseFloat(parts[0]);
-            const lon = parseFloat(parts[1]);
-            const date = parts[2];
-            const time = parts[3];
-
-            document.getElementById("date").innerHTML = date;
-            document.getElementById("time").innerHTML = time;
-
-            if (!isNaN(lat) && !isNaN(lon)) {
-                clearMarkersAndPolylines(); // Borra los marcadores y polilíneas existentes
-                addMarkerAndPolyline(lat, lon, date, time);
-            }
-        }
-    }
-}
-
-setInterval(() => {
-    getData();
-}, 5000);
-
-// Variable para rastrear el índice del dato actual
-var currentIndex = 0;
-
-// Definir data como una variable global
-var data = []; // Aquí asigna tus datos JSON a esta variable
-
-// Función para mostrar el dato actual y el marcador en el mapa
-function mostrarDatoActual() {
-    if (data.length > 0 && currentIndex >= 0 && currentIndex < data.length) {
-        var datoActual = data[currentIndex];
-        var latitud = datoActual.latitud;
-        var longitud = datoActual.longitud;
-        var fecha = datoActual.fecha;
-        var hora = datoActual.hora;
-
-        // Actualiza el contenido del control de información con el dato actual
-        document.getElementById('latitud').textContent = latitud;
-        document.getElementById('longitud').textContent = longitud;
-        document.getElementById('timestamp').textContent = fecha + ' ' + hora;
-
-        // Elimina el marcador anterior (si existe)
-        if (marker) {
-            map.removeLayer(marker);
-        }
-
-        // Crea un nuevo marcador en la ubicación actual
-        marker = L.marker([latitud, longitud]).addTo(map);
-        marker.bindPopup("Fecha: " + fecha + "<br>Hora: " + hora).openPopup();
-    }
-}
-
 
 function centerMap() {
     map.setView([10.965633, -74.8215339], 12);

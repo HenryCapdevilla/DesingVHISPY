@@ -49,24 +49,22 @@ app.get('/data', (req, res) => {
         const date = udpData[2];
         const time = udpData[3];
 
+        // Verifica que todos los campos necesarios no estén vacíos
+        if (!isNaN(longitude) && !isNaN(latitude) && !isNaN(date) && !isNaN(time)) {
         // Llama a la función addGpsData con los valores del último mensaje UDP
-        addGpsData(longitude, latitude, date, time);
-        console.log("Longitud: " + longitude)
-        console.log("Latitud: " + latitude)
-        console.log("Fecha: " + date)
-        console.log("Tiempo: " + time)
+            addGpsData(longitude, latitude, date, time);
 
-        // Envía una respuesta con los valores recibidos
-        res.json({
-            lon: longitude,
-            lat: latitude,
-            dt: date,
-            tm: time,
-        });
-    } else {
-        console.error("El mensaje UDP no tiene el formato esperado.");
-        res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
-    }    
+            // Envía una respuesta con los valores recibidos
+            res.json({
+                lon: longitude,
+                lat: latitude,
+                dt: date,
+                tm: time,
+            });
+        } else {
+            res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
+        }    
+    }
 });
 
 
