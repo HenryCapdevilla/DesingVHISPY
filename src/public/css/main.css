@@ -256,6 +256,24 @@ body {
     background: #F2EFE9;
 }
 
+/* Style for the clear button */
+.leaflet-control-button {
+    background-image: url('broom.jpg');
+    background-size: cover;
+    width: 50px; /* Set the width and height to match your image size */
+    height: 50px;
+}
+
+/* Style for the info tab */
+.leaflet-control-info {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    width: 200px;
+    text-align: left;
+}
+
 .sidebar.active ~ .home_content{
     width: 100%;
     left: 240px;
