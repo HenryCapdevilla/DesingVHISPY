@@ -81,7 +81,7 @@ function clearMarkersAndPolylines() {
 /* CREATING MARKERS */
 //Last position marker
 var penguinMarker = L.icon({
-    iconUrl: 'marker.png',
+    iconUrl: './marker.png',
     iconSize: [35,50],
     shadowSize:   [50, 64],
     iconAnchor:   [20,40],
@@ -91,7 +91,7 @@ var penguinMarker = L.icon({
 
 // Historic onClick marker
 var histPenguinMarker = L.icon({
-    iconUrl: 'marker2.png',
+    iconUrl: './marker2.png',
     iconSize: [35,39.5],
     shadowSize:   [50, 64],
     iconAnchor:   [20,40],
@@ -159,7 +159,7 @@ addControlPlaceholders(map);
 // Change the position of the Zoom Control to a newly created placeholder.
 map.zoomControl.setPosition('bottomright');
 //Giving an initial value to the marker
-marker = L.marker([11, -74], {iconUrl: 'marker.png'})
+marker = L.marker([11, -74], {iconUrl: './marker.png'})
 
 var polyline;
 var polylinePoints;
