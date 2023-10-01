@@ -51,10 +51,10 @@ app.get("/data", (req, res) => {
 
             if (rows && rows.length > 0) {
                 res.json({
-                    "lon": rows[0].longitud,
-                    "lat": rows[0].latitud,
-                    "dt": moment(rows[0].fecha).format("YYYY/MM/DD"),
-                    "tm": rows[0].hora,
+                    "lon": rows[0].longitude,
+                    "lat": rows[0].latitude,
+                    "dt": moment(rows[0].date).format("YYYY/MM/DD"),
+                    "tm": rows[0].time,
                 });
             } else {
                 res.status(404).json({ error: "No se encontraron resultados en la base de datos" });
