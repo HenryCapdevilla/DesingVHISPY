@@ -70,32 +70,47 @@ let prelat = 0;
 let prelon = 0;
 
 
-async function getData(){
+async function getData() {
     const response = await fetch("./data", {});
     let responseJson = await response.json();
-    //console.log("respuesta del servidor", responseJson)
-    document.getElementById("date").innerHTML = await `${responseJson.dt}`;
-    document.getElementById("time").innerHTML = await `${responseJson.tm}`;
 
-    lat = parseFloat(responseJson.lat);
-    lon = parseFloat(responseJson.lon);
+    if (responseJson && responseJson.length >= 4) {
+        // Divide la cadena en partes separadas
+        const parts = responseJson[0].split(", ");
 
-    if(responseJson.lat !== 0){
-        map.removeLayer(marker);
-        marker = new L.marker([parseFloat(responseJson.lat), parseFloat(responseJson.lon)], {icon: penguinMarker});
-        marker.bindPopup("lat:"+responseJson.lat+",lon:"+responseJson.lon);
-        map.addLayer(marker);
+        // Verifica que haya al menos 4 partes
+        if (parts.length >= 4) {
+            const lat = parseFloat(parts[0]);
+            const lon = parseFloat(parts[1]);
+            const date = parts[2];
+            const time = parts[3];
 
-        polylinePoints = [[prelat, prelon], [lat, lon] ]
+            document.getElementById("date").innerHTML = date;
+            document.getElementById("time").innerHTML = time;
 
-        if (prelat !== 0){
-            polyline = L.polyline(polylinePoints).addTo(map)
+            if (!isNaN(lat) && !isNaN(lon)) {
+                map.removeLayer(marker);
+                marker = new L.marker([lat, lon], { icon: penguinMarker });
+                marker.bindPopup("lat:" + lat + ",lon:" + lon);
+                map.addLayer(marker);
+
+                polylinePoints = [[prelat, prelon], [lat, lon]];
+
+                if (prelat !== 0) {
+                    polyline = L.polyline(polylinePoints).addTo(map);
+                }
+
+                prelat = lat;
+                prelon = lon;
+            }
         }
     }
-    prelat = lat;
-    prelon = lon;
 }
-setInterval(()=>{getData()}, 3000);
+
+setInterval(() => {
+    getData();
+}, 3000);
+
 
 
 function centerMap() {
