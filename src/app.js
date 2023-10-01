@@ -7,6 +7,7 @@ const dgram = require('dgram');
 
 const cnx = require('./cnx');
 const moment = require("moment");
+const { addGpsData } = require('./cnx');
 
 const app = express();
 
@@ -40,6 +41,7 @@ udp.bind(udpPort,udpHost);
 
 
 app.get("/data", (req, res) => {
+    addGpsData(longitude, latitude, date, time);
     if (data[0] === 0) {
         cnx.pool.query("SELECT LONGITUD, LATITUD, FECHA, HORA FROM gps_data ORDER BY FECHA DESC, HORA DESC", (err, rows) => {
             if (err) {

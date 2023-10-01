@@ -12,9 +12,8 @@ const connect = () =>{
         console.log("Successful database connection!");
     });
 }
-
 const addGpsData = (longitude, latitude, date, time) => {
-    cnx.pool.query(
+    pool.query(
         "INSERT INTO gps_data (LATITUD, LONGITUD, FECHA, HORA) VALUES (?, ?, ?, ?)",
         [latitude, longitude, date, time],
         (err, rows) => {
@@ -27,7 +26,7 @@ const addGpsData = (longitude, latitude, date, time) => {
             }
         }
     );
-}
+};
 
 module.exports = {
     pool,
