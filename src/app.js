@@ -42,10 +42,11 @@ udp.bind(udpPort,udpHost);
 // Ruta para agregar datos GPS desde el servidor UDP
 app.get('/data', (req, res) => {
     // Usa los valores del último mensaje UDP recibido
-    const longitude = parseFloat(data[0]); // Convierte a número flotante
-    const latitude = parseFloat(data[1]); // Convierte a número flotante
-    const date = data[2];
-    const time = data[3];
+    const udpData = data[0].split(', '); // Separar la cadena por comas y espacio
+    const longitude = parseFloat(udpData[0]); // Convertir a número flotante
+    const latitude = parseFloat(udpData[1]); // Convertir a número flotante
+    const date = udpData[2];
+    const time = udpData[3];
     
     // Llama a la función addGpsData con los valores del último mensaje UDP
     addGpsData(longitude, latitude, date, time);
