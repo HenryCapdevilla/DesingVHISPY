@@ -41,7 +41,7 @@ udp.bind(udpPort,udpHost);
 
 app.get("/data", (req,res) =>{
     if(data[0]===0){
-        cnx.pool.query("INSERT INTO coordenadas (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)", (err,rows) => {
+        cnx.pool.query("INSERT INTO gps_data (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)", (err,rows) => {
             res.json({
                 "lon"   : rows[0].longitud,
                 "lat"   : rows[0].latitud,
