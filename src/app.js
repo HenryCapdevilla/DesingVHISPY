@@ -55,18 +55,18 @@ app.get('/data', (req, res) => {
         console.log("Latitud: " + latitude)
         console.log("Fecha: " + date)
         console.log("Tiempo: " + time)
+
+        // Envía una respuesta con los valores recibidos
+        res.json({
+            lon: longitude,
+            lat: latitude,
+            dt: date,
+            tm: time,
+        });
     } else {
         console.error("El mensaje UDP no tiene el formato esperado.");
         res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
     }    
-    
-    // Envía una respuesta con los valores recibidos
-    res.json({
-        lon: longitude,
-        lat: latitude,
-        dt: date,
-        tm: time,
-    });
 });
 
 
