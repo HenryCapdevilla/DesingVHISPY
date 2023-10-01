@@ -148,13 +148,13 @@ body {
     text-align: center;
 }
 
-.sidebar .subtitles{
+.sidebar .sub-titles{
     opacity: 0;
     pointer-events: none;
     transition: all 0.1s ease;
 }
 
-.sidebar.active .subtitles{
+.sidebar.active .sub-titles{
     color: white;
     opacity: 1;
     margin-left: 10px;
