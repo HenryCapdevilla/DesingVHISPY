@@ -39,35 +39,27 @@ udp.on('message', (msg) =>{
 });
 udp.bind(udpPort,udpHost);
 
-
-app.get("/data", (req, res) => {
+// Ruta para agregar datos GPS desde el servidor UDP
+app.get('/data', (req, res) => {
+    // Usa los valores del último mensaje UDP recibido
+    const longitude = parseFloat(data[0]); // Convierte a número flotante
+    const latitude = parseFloat(data[1]); // Convierte a número flotante
+    const date = data[2];
+    const time = data[3];
+    
+    // Llama a la función addGpsData con los valores del último mensaje UDP
     addGpsData(longitude, latitude, date, time);
-    if (data[0] === 0) {
-        cnx.pool.query("SELECT LONGITUD, LATITUD, FECHA, HORA FROM gps_data ORDER BY FECHA DESC, HORA DESC", (err, rows) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-            }
-
-            if (rows && rows.length > 0) {
-                res.json({
-                    "lon": rows[0].longitude,
-                    "lat": rows[0].latitude,
-                    "dt": moment(rows[0].date).format("YYYY/MM/DD"),
-                    "tm": rows[0].time,
-                });
-            } else {
-                res.status(404).json({ error: "No se encontraron resultados en la base de datos" });
-            }
-        });
-    } else {
-        res.json({
-            "lat": data[1],
-            "lon": data[0],
-            "tm": data[3],
-            "dt": moment(data[2]).format("YYYY/MM/DD"),
-        });
-    }
+    console.log("Longitud: " + longitude)
+    console.log("Latitud: " + latitude)
+    console.log("Fecha: " + date)
+    console.log("Tiempo: " + time)
+    // Envía una respuesta con los valores recibidos
+    res.json({
+        lon: longitude,
+        lat: latitude,
+        dt: date,
+        tm: time,
+    });
 });
 
 
