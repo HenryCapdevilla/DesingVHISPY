@@ -194,7 +194,7 @@ async function getData() {
 
 setInterval(() => {
     getData();
-}, 3000);
+}, 5000);
 
 // Variable para rastrear el índice del dato actual
 var currentIndex = 0;
