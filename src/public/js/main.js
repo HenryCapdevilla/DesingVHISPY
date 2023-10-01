@@ -34,10 +34,49 @@ end_date.addEventListener('click', function (){
 })
 
 // LEAFLET SETTINGS
+// Variables para mantener un seguimiento de marcadores y polilíneas
+let markers = [];
+let polylines = [];
+let prelat = 0;
+let prelon = 0;
+let marker = null;
 // build leaflet map with a specific template
 var map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
 const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
 L.tileLayer(tileURL).addTo(map);
+
+// Función para agregar marcadores y polilíneas
+function addMarkerAndPolyline(lat, lon, date, time) {
+    // Crea un marcador
+    const newMarker = L.marker([lat, lon]).addTo(map);
+    newMarker.bindPopup(`Fecha: ${date}<br>Hora: ${time}`).openPopup();
+
+    // Agrega el marcador a la lista de marcadores
+    markers.push(newMarker);
+
+    // Crea una polilínea si hay coordenadas anteriores
+    if (prelat !== 0 && prelon !== 0) {
+        const polyline = L.polyline([[prelat, prelon], [lat, lon]], { color: 'blue' }).addTo(map);
+        polylines.push(polyline);
+    }
+
+    // Actualiza las coordenadas anteriores
+    prelat = lat;
+    prelon = lon;
+}
+
+// Función para eliminar todos los marcadores y polilíneas
+function clearMarkersAndPolylines() {
+    markers.forEach(marker => {
+        map.removeLayer(marker);
+    });
+    markers = [];
+
+    polylines.forEach(polyline => {
+        map.removeLayer(polyline);
+    });
+    polylines = [];
+}
 
 /* CREATING MARKERS */
 //Last position marker
@@ -126,9 +165,6 @@ var polyline;
 var polylinePoints;
 let lat = 0;
 let lon = 0;
-let prelat = 0;
-let prelon = 0;
-
 
 async function getData() {
     const response = await fetch("./data", {});
@@ -149,19 +185,8 @@ async function getData() {
             document.getElementById("time").innerHTML = time;
 
             if (!isNaN(lat) && !isNaN(lon)) {
-                map.removeLayer(marker);
-                marker = new L.marker([lat, lon], { icon: penguinMarker });
-                marker.bindPopup("lat:" + lat + ",lon:" + lon);
-                map.addLayer(marker);
-
-                polylinePoints = [[prelat, prelon], [lat, lon]];
-
-                if (prelat !== 0) {
-                    polyline = L.polyline(polylinePoints).addTo(map);
-                }
-
-                prelat = lat;
-                prelon = lon;
+                clearMarkersAndPolylines(); // Borra los marcadores y polilíneas existentes
+                addMarkerAndPolyline(lat, lon, date, time);
             }
         }
     }
@@ -173,7 +198,6 @@ setInterval(() => {
 
 // Variable para rastrear el índice del dato actual
 var currentIndex = 0;
-var marker; // Variable para almacenar el marcador actual
 
 // Definir data como una variable global
 var data = []; // Aquí asigna tus datos JSON a esta variable
