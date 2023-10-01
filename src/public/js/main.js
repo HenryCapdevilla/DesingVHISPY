@@ -84,6 +84,7 @@ async function getData() {
             const lon = parseFloat(parts[1]);
             const date = parts[2];
             const time = parts[3];
+            console.log(lat, lon, date, time)
 
             document.getElementById("date").innerHTML = date;
             document.getElementById("time").innerHTML = time;
