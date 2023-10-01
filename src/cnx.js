@@ -14,11 +14,19 @@ const connect = () =>{
 }
 
 const addGpsData = (longitude, latitude, date, time) => {
-    let query = "INSERT INTO gps_data (LATITUD, LONGITUD, FECHA, HORA) VALUES (%s, %s, %s, %s)"
-        +"VALUES ('"+longitude+"','"+latitude+"','"+date+"','"+time+"')";
-    pool.query(query, function (err) {
-        if(err) throw err;
-    })
+    cnx.pool.query(
+        "INSERT INTO gps_data (LATITUD, LONGITUD, FECHA, HORA) VALUES (?, ?, ?, ?)",
+        [latitude, longitude, date, time],
+        (err, rows) => {
+            if (err) {
+                console.error("Error al insertar datos en la base de datos:", err);
+                // Manejar el error de alguna manera, por ejemplo, enviar una respuesta de error HTTP
+            } else {
+                console.log("Datos insertados correctamente:", rows);
+                // Los datos se insertaron correctamente, puedes realizar otras acciones aquí
+            }
+        }
+    );
 }
 
 module.exports = {
