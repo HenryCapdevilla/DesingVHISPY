@@ -35,7 +35,8 @@ end_date.addEventListener('click', function (){
 
 // LEAFLET SETTINGS
 // build leaflet map with a specific template
-const map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
+const map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
+const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
 L.tileLayer(tileURL).addTo(map);
 
 /* CREATING MARKERS */
@@ -58,6 +59,46 @@ var histPenguinMarker = L.icon({
     shadowAnchor: [4, 62],
     popupAnchor:  [10, -20]
 })
+
+// Custom Leaflet control to clear the map
+var clearButtonControl = L.Control.extend({
+    options: {
+        position: 'topright'
+    },
+    onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+            var button = L.DomUtil.create('a', 'leaflet-control-button', container);
+            button.href = '#';
+            button.title = 'Limpiar Mapa';
+            button.innerHTML = ''; // No text inside the button, just the icon
+    
+            L.DomEvent.on(button, 'click', function () {
+                for (var i = 0; i < polylines.length; i++) {
+                    map.removeLayer(polylines[i]);
+                }
+                polylines = [];
+            });
+    
+            return container;
+        }
+});
+
+map.addControl(new clearButtonControl());
+
+    // Custom Leaflet control for info tab
+var infoTabControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
+        onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-control-info');
+            container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
+            return container;
+        }
+});
+
+var infoTab = new infoTabControl();
+infoTab.addTo(map);
 
 //Giving an initial value to the marker
 marker = L.marker([11, -74], {iconUrl: 'marker.png'})
@@ -111,6 +152,37 @@ setInterval(() => {
     getData();
 }, 3000);
 
+// Variable para rastrear el índice del dato actual
+var currentIndex = 0;
+var marker; // Variable para almacenar el marcador actual
+
+// Definir data como una variable global
+var data = []; // Aquí asigna tus datos JSON a esta variable
+
+// Función para mostrar el dato actual y el marcador en el mapa
+function mostrarDatoActual() {
+    if (data.length > 0 && currentIndex >= 0 && currentIndex < data.length) {
+        var datoActual = data[currentIndex];
+        var latitud = datoActual.latitud;
+        var longitud = datoActual.longitud;
+        var fecha = datoActual.fecha;
+        var hora = datoActual.hora;
+
+        // Actualiza el contenido del control de información con el dato actual
+        document.getElementById('latitud').textContent = latitud;
+        document.getElementById('longitud').textContent = longitud;
+        document.getElementById('timestamp').textContent = fecha + ' ' + hora;
+
+        // Elimina el marcador anterior (si existe)
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Crea un nuevo marcador en la ubicación actual
+        marker = L.marker([latitud, longitud]).addTo(map);
+        marker.bindPopup("Fecha: " + fecha + "<br>Hora: " + hora).openPopup();
+    }
+}
 
 
 function centerMap() {
