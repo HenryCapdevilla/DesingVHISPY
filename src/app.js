@@ -41,20 +41,20 @@ udp.bind(udpPort,udpHost);
 
 app.get("/data", (req,res) =>{
     if(data[0]===0){
-        cnx.pool.query("SELECT fecha, hora, latitud, longitud FROM gps_data ORDER BY ID DESC LIMIT 1", (err,rows) => {
+        cnx.pool.query("SELECT LONGITUD, LATITUD, FECHA, HORA FROM coordenadas ORDER BY FECHA DESC, HORA DESC", (err,rows) => {
             res.json({
-                "lat"   : rows[0].latitud,
                 "lon"   : rows[0].longitud,
+                "lat"   : rows[0].latitud,
+                "dt"    : moment(rows[0].fecha).format("YYYY/MM/DD"),
                 "tm"    : rows[0].hora,
-                "dt"    : moment(rows[0].fecha).format("DD/MM/YYYY"),
             });
         });
     } else {
         res.json({
-            "lat"   : data[0],
-            "lon"   : data[1],
-            "tm"    : data[2],
-            "dt"    : moment(data[3]).format("DD/MM/YYYY"),
+            "lat"   : data[1],
+            "lon"   : data[0],
+            "tm"    : data[3],
+            "dt"    : moment(data[2]).format("YYYY/MM/DD"),
         })
     }
 });
