@@ -162,7 +162,8 @@ body {
 }
 
 #btn-gps{
-    padding-left: 2em;
+    padding-left: 1.3em;
+    padding-top: 1em;
 }
 .sidebar .links_name{
     opacity: 0;
@@ -175,6 +176,7 @@ body {
     pointer-events: auto;
     margin-left: 10px;
     font-size: 17px;
+    padding-bottom: 1.5em;
 }
 
 .sidebar.active .historic{
