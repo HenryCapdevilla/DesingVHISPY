@@ -94,21 +94,6 @@ var clearButtonControl = L.Control.extend({
 
 map.addControl(new clearButtonControl());
 
-    // Custom Leaflet control for info tab
-var infoTabControl = L.Control.extend({
-        options: {
-            position: 'bottomright'
-        },
-        onAdd: function (map) {
-            var container = L.DomUtil.create('div', 'leaflet-control-info');
-            container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
-            return container;
-        }
-});
-
-var infoTab = new infoTabControl();
-infoTab.addTo(map);
-
 // Create additional Control placeholders
 function addControlPlaceholders(map) {
     var corners = map._controlCorners,
