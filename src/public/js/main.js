@@ -197,6 +197,24 @@ function createCircle(latlng, radius) {
     circlesArray.push(circle);
 }
 
+// Obtener el elemento input y el span donde se muestra el valor del radio
+const radiusSlider = document.getElementById('radiusSlider');
+const radiusValue = document.getElementById('radiusValue');
+
+// Agregar un evento para escuchar los cambios en el input
+radiusSlider.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    const newRadius = parseInt(radiusSlider.value);
+
+    // Actualizar el valor del span que muestra el radio
+    radiusValue.textContent = `Radio: ${newRadius} metros`;
+
+    // Actualizar el radio del círculo en el mapa (suponiendo que "circle" es el círculo que deseas actualizar)
+    if (circle) {
+        circle.setRadius(newRadius);
+    }
+});
+
 map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
