@@ -134,9 +134,7 @@ body {
 }
 
 #pickingMap_btn{
-    position: relative;
-    bottom: -29vh;
-    left: 0px;
+    display: none;
 }
 
 .sidebar .nav_list li a:hover{
