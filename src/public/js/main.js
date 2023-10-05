@@ -174,21 +174,14 @@ button.addEventListener("click", async (event) =>{
     }
  })
 
-histMarker = L.marker([11.027, -74.669], {icon: favicon});
-
-let circle = null;
+histMarker = L.marker([11.027, -74.669], {icon: histPenguinMarker});
 
 map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
-        // Verificar si el círculo existe y eliminarlo
-        if (circle) {
-            map.removeLayer(circle);
-        }
-
-        // Agregar un nuevo círculo al mapa
+        // Agregar un círculo al mapa
         const radius = 100; // Cambia el radio según tus necesidades
-            circle = L.circle(e.latlng, {
+        var circle = L.circle(e.latlng, {
             color: 'red', // Color del círculo
             fillColor: 'red', // Color de relleno
             fillOpacity: 0.3, // Opacidad del relleno
