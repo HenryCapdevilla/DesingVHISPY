@@ -181,6 +181,11 @@ let circlesArray = [];
 
 // Función para crear un círculo en el mapa
 function createCircle(latlng, radius) {
+    // Eliminar los círculos existentes antes de crear uno nuevo
+    for (const circle of circlesArray) {
+        map.removeLayer(circle);
+    }
+    circlesArray = []; // Limpiar el array de círculos
     const circle = L.circle(latlng, {
         color: 'red',
         fillColor: 'red',
