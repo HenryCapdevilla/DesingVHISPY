@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coiny&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: #F2EFE9;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 70px;
+    padding-top: 10px;
+    background: #0e1842;
+    transition: all 0.4s ease;
+}
+
+.sidebar.active{
+    width: 240px;
+}
+
+.sidebar .logo_details .logo{
+    color: #F2EFE9;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar.active .logo_details .logo{
+    opacity: 1;
+    pointer-events: none;
+}
+
+.logo_details .logo img{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.logo_details .logo .logo_name{
+    font-size:  22px;
+    padding: 10px 10px 0;
+    font-weight: 700;
+}
+
+.sidebar #btn{
+    position: absolute;
+    color: #F2EFE9;
+    top: 6px;
+    left: 55%;
+    font-size: 28px;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    transform: translateX(-50%);
+    transition: all 0.4s ease;
+}
+
+.sidebar.active #btn{
+    left: 88%
+}
+
+.sidebar .nav_list {
+    margin-top: 20px;
+}
+
+.sidebar.active  .nav_list li{
+    position: relative;
+    list-style: none;
+    transition: all 0.4s ease;
+}
+
+.sidebar.active  .nav_list li .date_content {
+    margin-left: 50%;
+    display: flex;
+    border-radius: 12px;
+    width: 200px;
+    background: #F2EFE9;
+}
+
+.sidebar .nav_list li .iocn-link{
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    padding-left: 5px;
+    border-radius: 12px;
+}
+
+.sidebar .nav_list li button{
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    margin-top: 10px;
+    margin-left: 6px;
+    transition: all 0.4s ease;
+}
+
+.sidebar.active .nav_list li button {
+    margin-left: 35%;
+}
+
+.sidebar .nav_list li .iocn-link-rt a{
+    margin-top: 30px;
+    color: #ffffff;
+    background-color: #1f2e6c;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    padding-left: 5px;
+    border-radius: 18px;
+}
+
+.sidebar .nav_list li a:hover{
+    color: #0e1842;
+    background: #a5b5ff;
+    width: 240px;
+}
+
+.sidebar .nav_list li i{
+    height: 50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    font-size: 27px;
+    text-align: center;
+}
+
+.sidebar.active .nav_list li i{
+    text-align: center;
+}
+
+
+
+.sidebar .links_name{
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.1s ease;
+}
+
+.sidebar.active .links_name{
+    opacity: 1;
+    pointer-events: auto;
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+.sidebar.active .historic{
+    background: #1f2e6c;
+    border-radius: 12px;
+    margin: 0 15px;
+    padding: 2px 20px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.8);
+    transition: all 0.4s ease;
+    opacity: 1;
+}
+
+.sidebar .historic{
+    opacity: 0;
+    transition: all .5s ease;
+    position: absolute;
+}
+
+
+.sidebar .historic .moment{
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active .historic .moment p{
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 5px;
+    transition: all 0.4s ease;
+    opacity: 1;
+}
+
+.sidebar.active .historic .moment input{
+    margin-left: 15%;
+    position: relative;
+    font-size: 15px;
+    border-radius: 5px;
+    background: #c9d1ff;
+    width: 120px;
+    height: 30px;
+    transition: all 0.4s ease;
+    opacity: 1;
+}
+
+.sidebar .historic .moment input p{
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.sidebar .historic .boton button{
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+
+.sidebar .historic.active {
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.home_content{
+    position: fixed;
+    width: calc(100% - 65px);
+    left: 65px;
+    height: 100%;
+    transition: all 0.4s ease;
+}
+
+
+.home_content #onScreeBox {
+    display: none;
+    /*
+    height: 200px;
+    */
+    width: 400px;
+    right: 250px;
+    top: 10px;
+    padding: 25px;
+    align-items: center;
+    position: absolute;
+    border-radius: 20px;
+    z-index: 1000;
+    background-color: rgba(201, 209, 255, 0.8);
+    border: solid #3a51b7 2px;
+    color: black;
+}
+#map-template  {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #F2EFE9;
+}
+
+.sidebar.active ~ .home_content{
+    width: 100%;
+    left: 240px;
+}
