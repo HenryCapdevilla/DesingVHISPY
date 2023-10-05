@@ -125,32 +125,6 @@
         let pick = document.querySelector("#pickingMap");
         let pickingMap = false;
 
-        // Obtén la fecha y hora actual
-        const now = new Date();
-
-        // Obtiene las referencias a los elementos <span> por su ID
-        const dateElement = document.getElementById("date");
-        const timeElement = document.getElementById("time");
-
-        // Actualiza el contenido de los elementos <span>
-        dateElement.textContent = formatDate(now); // Llama a una función para formatear la fecha
-        timeElement.textContent = formatTime(now); // Llama a una función para formatear la hora
-
-        // Función para formatear la fecha en "YYYY/MM/DD"
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Agrega cero al mes si es necesario
-            const day = String(date.getDate()).padStart(2, '0'); // Agrega cero al día si es necesario
-            return `${year}/${month}/${day}`;
-        }
-
-        // Función para formatear la hora en "HH:MM:SS"
-        function formatTime(date) {
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const seconds = String(date.getSeconds()).padStart(2, '0');
-            return `${hours}:${minutes}:${seconds}`;
-        }
 
         rec.onclick = function () {
             historic.classList.toggle("active");
@@ -200,6 +174,7 @@
         btn.onclick = function() {
             sidebar.classList.toggle("active");
         }
+
 
     </script>
 
