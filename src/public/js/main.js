@@ -176,7 +176,7 @@ button.addEventListener("click", async (event) =>{
 
 histMarker = L.marker([11.027, -74.669], {icon: histPenguinMarker});
 
-map.on('mousemove', async(e) => {
+map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
 	map.addLayer(histMarker);
