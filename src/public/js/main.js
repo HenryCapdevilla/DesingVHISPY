@@ -179,6 +179,14 @@ histMarker = L.marker([11.027, -74.669], {icon: histPenguinMarker});
 map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
+        // Agregar un círculo al mapa
+        const radius = 100; // Cambia el radio según tus necesidades
+        const circle = L.circle(e.latlng, {
+            color: 'red', // Color del círculo
+            fillColor: 'red', // Color de relleno
+            fillOpacity: 0.3, // Opacidad del relleno
+            radius: radius, // Radio del círculo en metros
+        }).addTo(map);
 	map.addLayer(histMarker);
 
 
