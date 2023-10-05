@@ -35,62 +35,13 @@ end_date.addEventListener('click', function (){
 
 // LEAFLET SETTINGS
 // build leaflet map with a specific template
-var map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);
-const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
+const map = L.map('map-template', {zoomControl: true}).setView([10.965633, -74.8215339], 12);const tileURL = 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
 L.tileLayer(tileURL).addTo(map);
-
-// Variable para rastrear el marcador del último valor
-let lastMarker = null;
-
-// Función para obtener y mostrar el último valor en el mapa
-async function getLastValue() {
-    try {
-        const response = await fetch("/latest"); // Reemplaza "/latest" con la ruta correcta en tu servidor
-        if (!response.ok) {
-            throw new Error("Error al obtener el último valor");
-        }
-        const latestData = await response.json();
-
-        if (latestData) {
-            const lat = parseFloat(latestData.latitud);
-            const lon = parseFloat(latestData.longitud);
-            const date = latestData.fecha;
-            const time = latestData.hora;
-
-            // Elimina el marcador anterior del último valor
-            if (lastMarker) {
-                map.removeLayer(lastMarker);
-            }
-
-            // Crea un nuevo marcador para el último valor
-            lastMarker = L.marker([lat, lon]).addTo(map);
-            lastMarker.bindPopup(`Fecha: ${date}<br>Hora: ${time}`).openPopup();
-
-            // Crea una polilínea si hay coordenadas anteriores
-            if (prelat !== 0 && prelon !== 0) {
-                const polyline = L.polyline([[prelat, prelon], [lat, lon]], { color: 'blue' }).addTo(map);
-                polylines.push(polyline);
-            }
-
-            // Actualiza las coordenadas anteriores
-            prelat = lat;
-            prelon = lon;
-        }
-    }catch (error) {
-        console.error("Error al obtener el último valor:", error);
-    }
-}
-
-// Establece un intervalo para obtener el último valor cada X segundos (por ejemplo, cada 5 segundos)
-setInterval(() => {
-    getLastValue();
-}, 5000); // Cambia el valor 5000 por el intervalo deseado en milisegundos
-
 
 /* CREATING MARKERS */
 //Last position marker
 var penguinMarker = L.icon({
-    iconUrl: './marker.png',
+    iconUrl: 'marker.png',
     iconSize: [35,50],
     shadowSize:   [50, 64],
     iconAnchor:   [20,40],
@@ -100,7 +51,7 @@ var penguinMarker = L.icon({
 
 // Historic onClick marker
 var histPenguinMarker = L.icon({
-    iconUrl: './marker2.png',
+    iconUrl: 'marker2.png',
     iconSize: [35,39.5],
     shadowSize:   [50, 64],
     iconAnchor:   [20,40],
@@ -108,73 +59,52 @@ var histPenguinMarker = L.icon({
     popupAnchor:  [10, -20]
 })
 
-// Custom Leaflet control to clear the map
-var clearButtonControl = L.Control.extend({
-    options: {
-        position: 'topright'
-    },
-    onAdd: function (map) {
-            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-            var button = L.DomUtil.create('a', 'leaflet-control-button', container);
-            button.href = '#';
-            button.title = 'Limpiar Mapa';
-            button.innerHTML = ''; // No text inside the button, just the icon
-    
-            L.DomEvent.on(button, 'click', function () {
-                for (var i = 0; i < polylines.length; i++) {
-                    map.removeLayer(polylines[i]);
-                }
-                polylines = [];
-            });
-    
-            return container;
+//Giving an initial value to the marker
+marker = L.marker([11, -74], {icon: penguinMarker})
+
+var polyline;
+var polylinePoints;
+let lat = 0;
+let lon = 0;
+let prelat = 0;
+let prelon = 0;
+
+
+async function getData(){
+    const response = await fetch("./data", {});
+    let responseJson = await response.json();
+    //console.log("respuesta del servidor", responseJson)
+    document.getElementById("date").innerHTML = await `${responseJson.dt}`;
+    document.getElementById("time").innerHTML = await `${responseJson.tm}`;
+
+    lat = parseFloat(responseJson.lat);
+    lon = parseFloat(responseJson.lon);
+
+    if(responseJson.lat !== 0){
+        map.removeLayer(marker);
+        marker = new L.marker([parseFloat(responseJson.lat), parseFloat(responseJson.lon)], {icon: penguinMarker});
+        marker.bindPopup("lat:"+responseJson.lat+",lon:"+responseJson.lon);
+        map.addLayer(marker);
+
+        polylinePoints = [[prelat, prelon], [lat, lon] ]
+
+        if (prelat !== 0){
+            polyline = L.polyline(polylinePoints).addTo(map)
         }
-});
-
-map.addControl(new clearButtonControl());
-
-    // Custom Leaflet control for info tab
-var infoTabControl = L.Control.extend({
-        options: {
-            position: 'bottomright'
-        },
-        onAdd: function (map) {
-            var container = L.DomUtil.create('div', 'leaflet-control-info');
-            container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
-            return container;
-        }
-});
-
-var infoTab = new infoTabControl();
-infoTab.addTo(map);
-
-// Create additional Control placeholders
-function addControlPlaceholders(map) {
-    var corners = map._controlCorners,
-        l = 'leaflet-',
-        container = map._controlContainer;
-
-        function createCorner(vSide, hSide) {
-            var className = l + vSide + ' ' + l + hSide;
-
-            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
-        }
-
-    createCorner('verticalcenter', 'left');
-    createCorner('verticalcenter', 'right');
+    }
+    prelat = lat;
+    prelon = lon;
 }
-addControlPlaceholders(map);
+setInterval(()=>{getData()}, 3000);
 
-// Change the position of the Zoom Control to a newly created placeholder.
-map.zoomControl.setPosition('bottomright');
 
 function centerMap() {
-    map.setView([10.965633, -74.8215339], 12);
+    map.setView([lat,lon],15);
 }
 
 button = document.getElementById('historics');
 button.addEventListener("click", async (event) =>{
-    var data = {
+    const data = {
         sdate: start_date.value,
         stime: start_time.value,
         edate: end_date.value,
@@ -201,10 +131,12 @@ button.addEventListener("click", async (event) =>{
  })
 
 histMarker = L.marker([11.027, -74.669], {icon: histPenguinMarker});
-map.on('click', async(e) => {
+
+map.on('mousemove', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
-        map.addLayer(histMarker);
+	map.addLayer(histMarker);
+
 
         const data = {
             latp    : e.latlng.lat,
@@ -244,10 +176,10 @@ map.on('click', async(e) => {
             var item = document.createElement('li');
 
             let date = new Date(placeHistoricData[i].fecha);
-            item.innerHTML = "El día " +date.toLocaleDateString('en-ZA')+ " a las " + placeHistoricData[i].hora;
+            item.innerHTML = "El día " +date.toLocaleDateString('es-ES')+ " a las " + placeHistoricData[i].hora;
             div.append(item);
             cont++;
-            if(cont===20){
+            if(cont===10){
                 break;
             }
         }

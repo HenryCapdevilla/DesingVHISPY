@@ -7,7 +7,6 @@ const dgram = require('dgram');
 
 const cnx = require('./cnx');
 const moment = require("moment");
-const { addGpsData } = require('./cnx');
 
 const app = express();
 
@@ -31,42 +30,34 @@ console.log("UDP Server:  ", udpPort);
 let data = [0, 0, 0, 0];
 let data_bk = [0, 0, 0, 0];
 udp.on('message', (msg) =>{
-    data = msg.toString().split("\n");
+    data = msg.toString().split(",");
     console.log(data)
-    if (data_bk[2] !== data[2]){
-        cnx.addGpsData(data[3],data[2],data[0],data[1]);}
+    if (data_bk[3] !== data[3]){
+        cnx.addGpsData(data[2],data[3],data[0],data[1]);}
     data_bk = data;
 });
 udp.bind(udpPort,udpHost);
 
-// Ruta para agregar datos GPS desde el servidor UDP
-app.get('/data', (req, res) => {
 
-    if (typeof data[0] === 'string' && data[0].includes(',')) {
-        const udpData = data[0].split(', ');
-        const longitude = parseFloat(udpData[0]);
-        const latitude = parseFloat(udpData[1]);
-        const date = udpData[2];
-        const time = udpData[3];
-
-        // Verifica que todos los campos necesarios no estén vacíos
-        if (!isNaN(longitude) && !isNaN(latitude) && !isNaN(date) && !isNaN(time)) {
-        // Llama a la función addGpsData con los valores del último mensaje UDP
-            addGpsData(longitude, latitude, date, time);
-
-            // Envía una respuesta con los valores recibidos
+app.get("/data", (req,res) =>{
+    if(data[0]===0){
+        cnx.pool.query("SELECT fecha, hora, latitud, longitud FROM gps_data ORDER BY ID DESC LIMIT 1", (err,rows) => {
             res.json({
-                lon: longitude,
-                lat: latitude,
-                dt: date,
-                tm: time,
+                "lat"   : rows[0].latitud,
+                "lon"   : rows[0].longitud,
+                "tm"    : rows[0].hora,
+                "dt"    : moment(rows[0].fecha).format("DD/MM/YYYY"),
             });
-        } else {
-            res.status(400).json({ error: "Formato de mensaje UDP incorrecto" });
-        }    
+        });
+    } else {
+        res.json({
+            "lat"   : data[0],
+            "lon"   : data[1],
+            "tm"    : data[3],
+            "dt"    : moment(data[2]).format("DD/MM/YYYY"),
+        })
     }
 });
-
 
 app.use(express.json({limit: '1mb'}));
 app.post("/moment", (req,res) =>{
@@ -86,7 +77,7 @@ app.post("/moment", (req,res) =>{
 app.post("/place", (req,res) =>{
     let querym=     "SELECT DISTINCT fecha, hora FROM gps_data WHERE latitud BETWEEN "
                     + "('"+req.body.latp+"'*0.99997) and ('"+req.body.latp+"'*1.00005) and longitud BETWEEN "
-                    + "('"+req.body.longp+"'*1.00005) and ('"+req.body.longp+"'*0.99997)"
+                    + "('"+req.body.longp+"'*1.00005) and ('"+req.body.longp+"'*0.99997) LIMIT 10"
 
 
     cnx.pool.query(querym, (err,rows) => {

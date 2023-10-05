@@ -18,3 +18,4 @@ SHOW TABLES;
 
 -- Describe tables
 DESCRIBE gps_data;
+
