@@ -137,6 +137,14 @@ body {
     display: none;
 }
 
+/* Mostrar el botón cuando se cumplan las condiciones */
+#pickingMap_btn.shown {
+    display: block;
+    position: relative;
+    bottom: -29vh;
+    left: 0px;
+}
+
 .sidebar .nav_list li a:hover{
     color: #0e1842;
     background: #a5b5ff;

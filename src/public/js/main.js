@@ -168,8 +168,11 @@ button.addEventListener("click", async (event) =>{
     var arr2 = [];
 
     if (start_time.value && end_time.value) {
-        document.getElementById('pickingMap_btn').style.display = 'block';
+        document.getElementById('pickingMap_btn').classList.add('shown'); // Agregar la clase
+    } else {
+        document.getElementById('pickingMap_btn').classList.remove('shown'); // Quitar la clase
     }
+    
     for (var i = 1; i < gpsHistoricData.length; i++){
         origin = [parseFloat(gpsHistoricData[i-1].latitud),parseFloat(gpsHistoricData[i-1].longitud)];
         destin = [parseFloat(gpsHistoricData[i].latitud),parseFloat(gpsHistoricData[i].longitud)];
