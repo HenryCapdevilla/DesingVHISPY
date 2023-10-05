@@ -186,7 +186,7 @@ map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
         // Agregar un nuevo círculo al mapa
-        const radius = parseInt(radiusSlider.value);
+        const radius = 100;
         circle = L.circle(e.latlng, {
             color: 'red', // Color del círculo
             fillColor: 'red', // Color de relleno
