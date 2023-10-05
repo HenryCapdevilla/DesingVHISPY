@@ -166,6 +166,10 @@ button.addEventListener("click", async (event) =>{
     
     var arr1 = [];
     var arr2 = [];
+
+    if (start_time.value && end_time.value) {
+        document.getElementById('pickingMap_btn').style.display = 'block';
+    }
     for (var i = 1; i < gpsHistoricData.length; i++){
         origin = [parseFloat(gpsHistoricData[i-1].latitud),parseFloat(gpsHistoricData[i-1].longitud)];
         destin = [parseFloat(gpsHistoricData[i].latitud),parseFloat(gpsHistoricData[i].longitud)];
@@ -196,24 +200,6 @@ function createCircle(latlng, radius) {
     // Agregar el círculo al array
     circlesArray.push(circle);
 }
-
-// Obtener el elemento input y el span donde se muestra el valor del radio
-const radiusSlider = document.getElementById('radiusSlider');
-const radiusValue = document.getElementById('radiusValue');
-
-// Agregar un evento para escuchar los cambios en el input
-radiusSlider.addEventListener('input', () => {
-    // Obtener el valor actual del input
-    const newRadius = parseInt(radiusSlider.value);
-
-    // Actualizar el valor del span que muestra el radio
-    radiusValue.textContent = `Radio: ${newRadius} metros`;
-
-    // Actualizar el radio del círculo en el mapa (suponiendo que "circle" es el círculo que deseas actualizar)
-    if (circle) {
-        circle.setRadius(newRadius);
-    }
-});
 
 map.on('click', async(e) => {
     if(pickingMap){
