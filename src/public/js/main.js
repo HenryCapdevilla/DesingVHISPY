@@ -69,6 +69,65 @@ let lon = 0;
 let prelat = 0;
 let prelon = 0;
 
+// Custom Leaflet control to clear the map
+var clearButtonControl = L.Control.extend({
+    options: {
+        position: 'topright'
+    },
+    onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+            var button = L.DomUtil.create('a', 'leaflet-control-button', container);
+            button.href = '#';
+            button.title = 'Limpiar Mapa';
+            button.innerHTML = ''; // No text inside the button, just the icon
+    
+            L.DomEvent.on(button, 'click', function () {
+                for (var i = 0; i < polylines.length; i++) {
+                    map.removeLayer(polylines[i]);
+                }
+                polylines = [];
+            });
+    
+            return container;
+        }
+});
+
+map.addControl(new clearButtonControl());
+
+    // Custom Leaflet control for info tab
+var infoTabControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
+        onAdd: function (map) {
+            var container = L.DomUtil.create('div', 'leaflet-control-info');
+            container.innerHTML = '<b>Latitud:</b> <span id="latitud"></span><br><b>Longitud:</b> <span id="longitud"></span><br><b>Timestamp:</b> <span id="timestamp"></span>';
+            return container;
+        }
+});
+
+var infoTab = new infoTabControl();
+infoTab.addTo(map);
+
+// Create additional Control placeholders
+function addControlPlaceholders(map) {
+    var corners = map._controlCorners,
+        l = 'leaflet-',
+        container = map._controlContainer;
+
+        function createCorner(vSide, hSide) {
+            var className = l + vSide + ' ' + l + hSide;
+
+            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+        }
+
+    createCorner('verticalcenter', 'left');
+    createCorner('verticalcenter', 'right');
+}
+addControlPlaceholders(map);
+
+// Change the position of the Zoom Control to a newly created placeholder.
+map.zoomControl.setPosition('bottomright');
 
 async function getData(){
     const response = await fetch("./data", {});
