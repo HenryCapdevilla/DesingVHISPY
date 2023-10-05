@@ -69,53 +69,47 @@ let lon = 0;
 let prelat = 0;
 let prelon = 0;
 
-// Crear un slider en el ámbito global
-let radiusSlider = null;
-
-// Custom Leaflet control para limpiar el mapa y mostrar el slider
-var customControl = L.Control.extend({
+// Custom Leaflet control to clear the map
+var clearButtonControl = L.Control.extend({
     options: {
         position: 'topright'
     },
     onAdd: function (map) {
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-        container.style.backgroundColor = 'white'; // Cambia el fondo si es necesario
-        
-        // Agregar el slider al contenedor
-        radiusSlider = L.DomUtil.create('input', '', container);
-        radiusSlider.type = 'range';
-        radiusSlider.id = 'radiusSlider';
-        radiusSlider.min = '0';
-        radiusSlider.max = '1000';
-        radiusSlider.step = '10';
-        radiusSlider.value = '100';
-        
-        // Agregar el elemento para mostrar el valor actual
-        var radiusValue = L.DomUtil.create('span', '', container);
-        radiusValue.id = 'radiusValue';
-        radiusValue.textContent = 'Radio: 100 metros';
-
-        // Agregar un espacio entre el slider y el botón
-        container.appendChild(document.createElement('br'));
-
-        // Agregar el botón de limpiar el mapa
-        var button = L.DomUtil.create('a', 'leaflet-control-button', container);
-        button.href = '#';
-        button.title = 'Limpiar Mapa';
-        button.innerHTML = ''; // No text inside the button, just the icon
-
-        L.DomEvent.on(button, 'click', function () {
-            for (var i = 0; i < polylines.length; i++) {
-                map.removeLayer(polylines[i]);
-            }
-            polylines = [];
-        });
-
-        return container;
-    }
+            var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+            var button = L.DomUtil.create('a', 'leaflet-control-button', container);
+            button.href = '#';
+            button.title = 'Limpiar Mapa';
+            button.innerHTML = ''; // No text inside the button, just the icon
+    
+            L.DomEvent.on(button, 'click', function () {
+                for (var i = 0; i < polylines.length; i++) {
+                    map.removeLayer(polylines[i]);
+                }
+                polylines = [];
+            });
+    
+            return container;
+        }
 });
 
-map.addControl(new customControl());
+map.addControl(new clearButtonControl());
+
+// Create additional Control placeholders
+function addControlPlaceholders(map) {
+    var corners = map._controlCorners,
+        l = 'leaflet-',
+        container = map._controlContainer;
+
+        function createCorner(vSide, hSide) {
+            var className = l + vSide + ' ' + l + hSide;
+
+            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+        }
+
+    createCorner('verticalcenter', 'left');
+    createCorner('verticalcenter', 'right');
+}
+addControlPlaceholders(map);
 
 // Change the position of the Zoom Control to a newly created placeholder.
 map.zoomControl.setPosition('bottomright');
@@ -182,20 +176,24 @@ button.addEventListener("click", async (event) =>{
 
 histMarker = L.marker([11.027, -74.669], {icon: favicon});
 
+let circle = null;
+
 map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
+        // Verificar si el círculo existe y eliminarlo
+        if (circle) {
+            map.removeLayer(circle);
+        }
+
         // Agregar un nuevo círculo al mapa
-        const radius = 100;
-        circle = L.circle(e.latlng, {
+        const radius = 100; // Cambia el radio según tus necesidades
+            circle = L.circle(e.latlng, {
             color: 'red', // Color del círculo
             fillColor: 'red', // Color de relleno
             fillOpacity: 0.3, // Opacidad del relleno
             radius: radius, // Radio del círculo en metros
         }).addTo(map);
-
-        // Mostrar el contenedor del slider cuando se hace clic en el mapa
-        document.getElementById('sliderContainer').style.display = 'block';
 	map.addLayer(histMarker);
 
 
@@ -246,9 +244,4 @@ map.on('click', async(e) => {
         }
         document.getElementById('register').append(div);
     }
-});
-
-// Agregar un evento de clic al mapa para ocultar el contenedor del slider cuando se hace clic en otro lugar
-map.on('click', function () {
-    document.getElementById('sliderContainer').style.display = 'none';
 });
