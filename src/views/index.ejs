@@ -175,6 +175,15 @@
             sidebar.classList.toggle("active");
         }
 
+        // Obtén una referencia al botón "Tiempo real" por su nuevo identificador
+        let realTimeButton = document.querySelector("#realTimeButton");
+
+        // Agrega un evento de clic al botón
+        realTimeButton.addEventListener('click', function() {
+            pickingMap = false;
+            map.removeLayer(histMarker);
+        });
+
 
     </script>
 
