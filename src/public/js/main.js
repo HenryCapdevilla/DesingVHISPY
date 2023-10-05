@@ -69,10 +69,18 @@ let lon = 0;
 let prelat = 0;
 let prelon = 0;
 
+// Obtén una referencia al botón "Tiempo real" por su id
+let realTimeButton = document.getElementById('RealTime_btn');
 
-async function getData(){
-    const response = await fetch("./data", {});
-    let responseJson = await response.json();
+// Agrega un evento de clic al botón
+realTimeButton.addEventListener("click", async (event) => {
+    // Llama a la función getData cuando se hace clic en el botón
+    await getData();
+});
+//----------------------
+function getData(){
+    const response = fetch("./data", {});
+    let responseJson = response.json();
     //console.log("respuesta del servidor", responseJson)
     document.getElementById("date").innerHTML = await `${responseJson.dt}`;
     document.getElementById("time").innerHTML = await `${responseJson.tm}`;
@@ -96,7 +104,7 @@ async function getData(){
     prelon = lon;
 }
 setInterval(()=>{getData()}, 3000);
-
+//----------------------
 
 function centerMap() {
     map.setView([lat,lon],15);
