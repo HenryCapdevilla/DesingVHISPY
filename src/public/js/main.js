@@ -176,17 +176,29 @@ button.addEventListener("click", async (event) =>{
 
 histMarker = L.marker([11.027, -74.669], {icon: histPenguinMarker});
 
+// Array para mantener un seguimiento de los círculos
+let circlesArray = [];
+
+// Función para crear un círculo en el mapa
+function createCircle(latlng, radius) {
+    const circle = L.circle(latlng, {
+        color: 'red',
+        fillColor: 'red',
+        fillOpacity: 0.3,
+        radius: radius,
+    }).addTo(map);
+
+    // Agregar el círculo al array
+    circlesArray.push(circle);
+}
+
 map.on('click', async(e) => {
     if(pickingMap){
         histMarker = histMarker.setLatLng(e.latlng);
-        // Agregar un círculo al mapa
-        const radius = 100; // Cambia el radio según tus necesidades
-        var circle = L.circle(e.latlng, {
-            color: 'red', // Color del círculo
-            fillColor: 'red', // Color de relleno
-            fillOpacity: 0.3, // Opacidad del relleno
-            radius: radius, // Radio del círculo en metros
-        }).addTo(map);
+        // Llamar a la función createCircle con las coordenadas y el radio deseados
+        const latlng = e.latlng; // Usar las coordenadas del clic
+        const radius = 100; // Cambiar el radio según tus necesidades
+        createCircle(latlng, radius);
 	map.addLayer(histMarker);
 
 
