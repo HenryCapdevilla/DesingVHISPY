@@ -69,7 +69,10 @@ let lon = 0;
 let prelat = 0;
 let prelon = 0;
 
-// Custom Leaflet control to clear the map and show a slider
+// Crear un slider en el ámbito global
+let radiusSlider = null;
+
+// Custom Leaflet control para limpiar el mapa y mostrar el slider
 var customControl = L.Control.extend({
     options: {
         position: 'topright'
@@ -79,13 +82,13 @@ var customControl = L.Control.extend({
         container.style.backgroundColor = 'white'; // Cambia el fondo si es necesario
         
         // Agregar el slider al contenedor
-        var slider = L.DomUtil.create('input', '', container);
-        slider.type = 'range';
-        slider.id = 'radiusSlider';
-        slider.min = '0';
-        slider.max = '1000';
-        slider.step = '10';
-        slider.value = '100';
+        radiusSlider = L.DomUtil.create('input', '', container);
+        radiusSlider.type = 'range';
+        radiusSlider.id = 'radiusSlider';
+        radiusSlider.min = '0';
+        radiusSlider.max = '1000';
+        radiusSlider.step = '10';
+        radiusSlider.value = '100';
         
         // Agregar el elemento para mostrar el valor actual
         var radiusValue = L.DomUtil.create('span', '', container);
@@ -113,23 +116,6 @@ var customControl = L.Control.extend({
 });
 
 map.addControl(new customControl());
-
-// Create additional Control placeholders
-function addControlPlaceholders(map) {
-    var corners = map._controlCorners,
-        l = 'leaflet-',
-        container = map._controlContainer;
-
-        function createCorner(vSide, hSide) {
-            var className = l + vSide + ' ' + l + hSide;
-
-            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
-        }
-
-    createCorner('verticalcenter', 'left');
-    createCorner('verticalcenter', 'right');
-}
-addControlPlaceholders(map);
 
 // Change the position of the Zoom Control to a newly created placeholder.
 map.zoomControl.setPosition('bottomright');
@@ -195,22 +181,6 @@ button.addEventListener("click", async (event) =>{
  })
 
 histMarker = L.marker([11.027, -74.669], {icon: favicon});
-
-
-const radiusSlider = document.getElementById('radiusSlider');
-const radiusValue = document.getElementById('radiusValue');
-
-radiusSlider.addEventListener('input', function() {
-    const newRadius = parseInt(this.value);
-    
-    // Actualiza el valor actual del radio en el span
-    radiusValue.textContent = `Radio: ${newRadius} metros`;
-    
-    // Verifica si ya existe un círculo y actualiza su radio
-    if (circle) {
-        circle.setRadius(newRadius);
-    }
-});
 
 map.on('click', async(e) => {
     if(pickingMap){
